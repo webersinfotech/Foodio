@@ -20,11 +20,15 @@ class Mongoose {
     }
 
     fetchAreas(query) {
-        return areas.find(query);
+        return areas.find(query).limit(900);
     }
 
     createRestaurants(data) {
         return restaurants.insertMany(data);
+    }
+
+    fetchRestaurantsAggregate(query) {
+        return restaurants.aggregate(query);
     }
 }
 

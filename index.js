@@ -15,7 +15,10 @@ class zomato {
 
     async launchBrowser() {
         this.browser = await puppeteer.launch({
-            headless: false
+            headless: false,
+            args: ['--no-sandbox']
+            // executablePath: 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe',
+            // ignoreDefaultArgs: ['--disable-extensions']
         });
     }
 
@@ -176,6 +179,21 @@ class zomato {
             console.log(detail);
         });
     }
+
+    async createeApi() {
+        await this.launchBrowser();
+
+        const page = await this.browser.newPage();
+
+        await page.goto('https://developers.zomato.com/api');
+        await page.waitFor(5000);
+
+        await page.click('.get-api-key-bttn');
+        await page.waitFor(5000);
+
+        await page.click('#signup-email');
+        await page.waitFor(500);
+    }
 }
 
 async function asyncForEach(array, callback) {
@@ -185,4 +203,4 @@ async function asyncForEach(array, callback) {
 }
 
 const scraper = new zomato();
-scraper.scrapeRestaurant();
+scraper.createeApi();
