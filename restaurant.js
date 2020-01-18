@@ -33,7 +33,7 @@ class Resturant {
                 path: '$area'
             }
         }, {
-            $limit: 800
+            $limit: 1000
         }]);
 
         await asyncForEach(resturants, async (resturant) => {
