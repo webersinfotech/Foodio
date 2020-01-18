@@ -18,7 +18,7 @@ class Area {
             bIsDetailFetched: {
                 $ne: true
             }
-        });
+        })
 
         await asyncForEach(areas, async (area) => {
             try {

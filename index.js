@@ -126,7 +126,7 @@ class zomato {
             await asyncForEach(total_page, async (i) => {
             // for(let i = 2; i <= 3; i++) { //replace static number with total_page
                 await page.goto(`${area.sLink}?page=${i}&nearby=0`);
-                await page.waitFor(1000);
+                await page.waitFor(1000)
 
                 const result = await page.evaluate(function() {
                     const results = [];

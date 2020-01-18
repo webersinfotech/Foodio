@@ -16,4 +16,4 @@ const restaurantsSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('restaurants', restaurantsSchema);
+module.exports = mongoose.model('restaurants', restaurantsSchema)

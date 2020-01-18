@@ -32,4 +32,4 @@ class Mongoose {
     }
 }
 
-module.exports = new Mongoose();
+module.exports = new Mongoose()

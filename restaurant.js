@@ -46,7 +46,7 @@ class Resturant {
             } catch(Error) {
                 console.log('Error occured: ', Error);
             }
-        });
+        })
     }
 
     async fetchDetail(query, area, area_type) {
