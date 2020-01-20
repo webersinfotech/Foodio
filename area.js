@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const request = require('request');
 const mongo = require('./mongo');
+const fs = require('fs');
 
 // tor.TorControlPort.password = '11999966';
 
@@ -50,6 +51,11 @@ class Area {
             });
         })
     }
+
+    async importArea(){
+        const areas = JSON.parse(fs.readFileSync('./areas.json', 'utf8'));
+        await mongo.createAreas(areas);
+    }
 }
 
 async function asyncForEach(array, callback) {
@@ -59,4 +65,4 @@ async function asyncForEach(array, callback) {
 }
 
 const area = new Area();
-area.searchArea();
+area.importArea();

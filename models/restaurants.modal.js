@@ -14,6 +14,6 @@ const restaurantsSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-});
+}, { strict: false });
 
 module.exports = mongoose.model('restaurants', restaurantsSchema)

@@ -30,6 +30,10 @@ class Mongoose {
     fetchRestaurantsAggregate(query) {
         return restaurants.aggregate(query);
     }
+
+    updateRestaurant(query, data) {
+        return restaurants.updateOne(query, data);
+    }
 }
 
 module.exports = new Mongoose()

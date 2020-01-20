@@ -11,12 +11,15 @@ mongoose.connect('mongodb://localhost:27017/foodio', { promiseLibrary: global.Pr
 class Resturant {
     constructor() {}
 
-    async searchResturant() {
+    async searchRestaurant() {
         const resturants = await mongo.fetchRestaurantsAggregate([{
             $match: {
                 bIsDetailFetched: {
                     $ne: true
-                } 
+                },
+                bErrorOccured: {
+                    $ne: true
+                }
             }
         }, {
             $lookup: {
@@ -30,19 +33,23 @@ class Resturant {
                 path: '$area'
             }
         }, {
-            $limit: 1
+            $limit: 800
         }]);
 
         await asyncForEach(resturants, async (resturant) => {
             try {
                 const data = await this.fetchDetail(resturant.sName, resturant.area.entity_id, resturant.area.entity_type);
-                if (data.restaurants.length >= 1) {
+                try {
                     const urls = [];
-                    data.restaurants.map((res) => {
-                        console.log(res.restaurant.url);
+                    const resturant_data = data.restaurants.find((res) => {
+                        return res.restaurant.url.split('?')[0] === resturant.sLink;
                     })
+
+                    resturant_data.restaurant.bIsDetailFetched = true;
+                    await mongo.updateRestaurant({_id: resturant._id}, resturant_data.restaurant);
+                } catch(Error) {
+                    await mongo.updateRestaurant({_id: resturant._id}, {bErrorOccured: true});
                 }
-                console.log(data.restaurants.length);
             } catch(Error) {
                 console.log('Error occured: ', Error);
             }
@@ -75,4 +82,4 @@ async function asyncForEach(array, callback) {
 }
 
 const resturant = new Resturant();
-resturant.searchResturant();
+resturant.searchRestaurant();
