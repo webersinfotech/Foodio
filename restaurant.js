@@ -14,9 +14,9 @@ class Resturant {
     async searchRestaurant() {
         const resturants = await mongo.fetchRestaurantsAggregate([{
             $match: {
-                bIsDetailFetched: {
+                /*bIsDetailFetched: {
                     $ne: true
-                },
+                },*/
                 bErrorOccured: {
                     $ne: true
                 }
@@ -33,12 +33,13 @@ class Resturant {
                 path: '$area'
             }
         }, {
-            $limit: 800
+            $limit: 1000
         }]);
 
         await asyncForEach(resturants, async (resturant) => {
             try {
                 const data = await this.fetchDetail(resturant.sName, resturant.area.entity_id, resturant.area.entity_type);
+                console.log(data);
                 try {
                     const urls = [];
                     
@@ -63,9 +64,11 @@ class Resturant {
             const options = {
                 url: `https://developers.zomato.com/api/v2.1/search?q=${encodeURI(query)}&entity_id=${area}&entity_type=${area_type}`,
                 headers: {
-                    'user-key': '3717835ae658ead76d31ab2b4535c8df'
+                    'user-key': '4cbd22ad6953d19f5ee877615a7c9cc5'
                 }
             };
+
+            // 3717835ae658ead76d31ab2b4535c8df
 
             request(options, function (error, response, body) {
                 if (error) rej(error);
