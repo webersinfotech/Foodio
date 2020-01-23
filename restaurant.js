@@ -64,11 +64,12 @@ class Resturant {
             const options = {
                 url: `https://developers.zomato.com/api/v2.1/search?q=${encodeURI(query)}&entity_id=${area}&entity_type=${area_type}`,
                 headers: {
-                    'user-key': '4cbd22ad6953d19f5ee877615a7c9cc5'
+                    'user-key': '3717835ae658ead76d31ab2b4535c8df'
                 }
             };
 
             // 3717835ae658ead76d31ab2b4535c8df
+            // 4cbd22ad6953d19f5ee877615a7c9cc5
 
             request(options, function (error, response, body) {
                 if (error) rej(error);
