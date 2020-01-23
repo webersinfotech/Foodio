@@ -41,6 +41,7 @@ class Resturant {
                 const data = await this.fetchDetail(resturant.sName, resturant.area.entity_id, resturant.area.entity_type);
                 try {
                     const urls = [];
+                    
                     const resturant_data = data.restaurants.find((res) => {
                         return res.restaurant.url.split('?')[0] === resturant.sLink;
                     })
