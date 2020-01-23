@@ -18,7 +18,7 @@ class Resturant {
                     $ne: true
                 },*/
                 bErrorOccured: {
-                    $ne: true
+                    $eq: true
                 }
             }
         }, {
