@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const request = require('request');
 const mongo = require('./mongo');
 
-mongoose.connect('mongodb://localhost:27017/foodio', { promiseLibrary: global.Promise, useNewUrlParser: true }).then(() => {
+mongoose.connect('mongodb://15.206.164.241:27017/foodio', { promiseLibrary: global.Promise, useNewUrlParser: true }).then(() => {
     console.log('Connected to database.');
   }).catch((error) => {
     console.log('Connection to Database failed.');
