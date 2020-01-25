@@ -39,6 +39,7 @@ class Resturant {
         await asyncForEach(resturants, async (resturant) => {
             try {
                 const data = await this.fetchDetail(resturant.sName, resturant.area.entity_id, resturant.area.entity_type);
+                console.log(data.status);
                 console.log(data);
                 try {
                     const urls = [];
