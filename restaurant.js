@@ -33,14 +33,14 @@ class Resturant {
                 path: '$area'
             }
         }, {
-            $limit: 1
+            $limit: 1000
         }]);
 
         await asyncForEach(resturants, async (resturant) => {
             try {
                 const data = await this.fetchDetail(resturant.sName, resturant.area.entity_id, resturant.area.entity_type);
-                if (typeof data.results_found === 'undefined') return;
                 console.log(data);
+                if (typeof data.results_found === 'undefined') return;
                 try {
                     const urls = [];
                     
