@@ -5,6 +5,7 @@ const mongo = require('./mongo');
 mongoose.connect('mongodb://15.206.164.241:27017/foodio', { promiseLibrary: global.Promise, useNewUrlParser: true }).then(() => {
     console.log('Connected to database.');
   }).catch((error) => {
+    console.log(error);
     console.log('Connection to Database failed.');
 });
 
