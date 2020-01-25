@@ -39,7 +39,7 @@ class Resturant {
         await asyncForEach(resturants, async (resturant) => {
             try {
                 const data = await this.fetchDetail(resturant.sName, resturant.area.entity_id, resturant.area.entity_type);
-                // console.log(data.status);
+                if (typeof data.results_found === 'undefined') return;
                 console.log(data);
                 try {
                     const urls = [];
@@ -51,7 +51,10 @@ class Resturant {
                     resturant_data.restaurant.bIsDetailFetched = true;
                     await mongo.updateRestaurant({_id: resturant._id}, resturant_data.restaurant);
                 } catch(Error) {
-                    await mongo.updateRestaurant({_id: resturant._id}, {bErrorOccured: true});
+                    await mongo.updateRestaurant({_id: resturant._id}, {
+                        bErrorOccured: true,
+                        bIsRetried: true
+                    });
                 }
             } catch(Error) {
                 console.log('Error occured: ', Error);
