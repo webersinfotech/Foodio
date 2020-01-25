@@ -73,7 +73,7 @@ class Resturant {
             // 4cbd22ad6953d19f5ee877615a7c9cc5
 
             request(options, function (error, response, body) {
-                console.log(body);
+                console.log(response);
                 if (error) rej(error);
                 res(JSON.parse(body));
             });
