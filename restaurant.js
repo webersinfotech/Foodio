@@ -93,5 +93,5 @@ async function asyncForEach(array, callback) {
     }
 }
 
-const resturant = new Resturant();
-resturant.searchRestaurant();
+// const resturant = new Resturant();
+// resturant.searchRestaurant();
