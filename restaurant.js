@@ -19,7 +19,10 @@ class Resturant {
                 },*/
                 bErrorOccured: {
                     $eq: true
-                }
+                },
+                bIsRetried: {
+                    $ne: true
+                } 
             }
         }, {
             $lookup: {
@@ -36,7 +39,8 @@ class Resturant {
             $limit: 1000
         }]);
 
-        await asyncForEach(resturants, async (resturant) => {
+        await asyncForEach(resturants, async (resturant, index) => {
+            console.log(index);
             try {
                 const data = await this.fetchDetail(resturant.sName, resturant.area.entity_id, resturant.area.entity_type);
                 console.log(data);
