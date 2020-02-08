@@ -42,7 +42,7 @@ const { Cluster } = require('puppeteer-cluster');
     const data = await mongo.fetchRestaurantsAggregateCursor(query);
     data.eachAsync(async (doc) => {
         try {
-            console.log(`eachAsync: ${doc.sLink.split('?')[0]}/order`);
+            // console.log(`eachAsync: ${doc.sLink.split('?')[0]}/order`);
             cluster.queue({url: `${doc.sLink.split('?')[0]}/order`, ID: doc._id});
             // await cluster.close();
         } catch(error) {
