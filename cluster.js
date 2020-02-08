@@ -8,7 +8,8 @@ const { Cluster } = require('puppeteer-cluster');
         concurrency: Cluster.CONCURRENCY_CONTEXT,
         maxConcurrency: 10,
         puppeteerOptions: {
-            headless: true
+            headless: true,
+            args: ['--no-sandbox']
         },
         // monitor: true
     });
