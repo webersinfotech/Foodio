@@ -6,7 +6,7 @@ const { Cluster } = require('puppeteer-cluster');
 (async () => {
     const cluster = await Cluster.launch({
         concurrency: Cluster.CONCURRENCY_CONTEXT,
-        maxConcurrency: 10,
+        maxConcurrency: 50,
         puppeteerOptions: {
             headless: true
         },
