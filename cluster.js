@@ -10,7 +10,7 @@ const { Cluster } = require('puppeteer-cluster');
         puppeteerOptions: {
             headless: true
         },
-        monitor: true
+        // monitor: true
     });
 
     await cluster.task(async ({ page, data }) => {
@@ -26,8 +26,6 @@ const { Cluster } = require('puppeteer-cluster');
     
     await mongoose.connect('mongodb://foodioadmin:11999966@15.206.164.241:27017/Foodio', { promiseLibrary: global.Promise, useNewUrlParser: true });
 
-    // cluster.queue(`https://www.zomato.com/ncr/local-connaught-place-new-delhi`);
-    // cluster.queue(`https://www.zomato.com/ncr/lord-of-the-drinks-connaught-place-new-delhi`);
     const query = [{
         $match: {
             bIsMenuFetched: {
@@ -37,21 +35,20 @@ const { Cluster } = require('puppeteer-cluster');
                 $ne: true
             }
         }
+    }, {
+        $limit: 10
     }];
 
     const data = await mongo.fetchRestaurantsAggregateCursor(query);
     data.eachAsync(async (doc) => {
         try {
-            // console.log(`eachAsync: ${doc.sLink.split('?')[0]}/order`);
             cluster.queue({url: `${doc.sLink.split('?')[0]}/order`, ID: doc._id});
-            // await cluster.close();
         } catch(error) {
             console.log(error);
         }
     })
 
     setInterval(async () => {
-        console.log('Interval finish');
         await cluster.idle();
         await cluster.close();
     }, 5000)
@@ -98,17 +95,22 @@ async function retrieveMenu(url, id, page) {
             await asyncForEach(data.categories, async (category, index) => {
                 category.resId = id;
                 const category_data = await mongo.createCategory(category);
-                console.log(category_data);
                 await asyncForEach(data.items[index], async (item) => {
                     item.resId = id;
                     item.iCategoryId = category_data._id;
                     await mongo.createItem(item);
                 });
-                await mongo.updateRestaurant({_id: id}, {bIsMenuFetched: true});
             });
+            await mongo.updateRestaurant({_id: id}, {bIsMenuFetched: true});
             res();
         } catch(error) {
             rej();
         }
     })
+}
+
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array);
+    }
 }
