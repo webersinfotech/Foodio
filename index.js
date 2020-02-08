@@ -1,13 +1,19 @@
 const puppeteer = require('puppeteer');
 const mongoose = require('mongoose');
-const mongo = require('./mongo')
+const mongo = require('./mongo');
+const { Cluster } = require('puppeteer-cluster');
 
 class zomato {
     constructor() {
         this.browser;
+        this.cluster;
     }
 
     async launchBrowser() {
+        this.cluster = await Cluster.launch({
+            concurrency: Cluster.CONCURRENCY_CONTEXT,
+            maxConcurrency: 2,
+        });
         this.browser = await puppeteer.launch({
             // headless: false,
             // args: ['--no-sandbox']
@@ -189,6 +195,39 @@ class zomato {
         await page.waitFor(500);
     }
 
+    async fetchMenuCluster() {
+        const query = [{
+            $match: {
+                bIsMenuFetched: {
+                    $ne: true
+                },
+                bIsTried: {
+                    $ne: true
+                }
+            }
+        }, {
+            $limit: 2
+        }];
+        console.log(query);
+
+        const data = await mongo.fetchRestaurantsAggregateCursor(query);
+        data.eachAsync(async (doc) => {
+            try {
+                await this.launchBrowser();
+                this.cluster.queue(`${doc.sLink.split('?')[0]}/order`);
+                // this.retrieveMenu(`${doc.sLink.split('?')[0]}/order`, doc._id);
+            } catch(error) {
+                console.log(error);
+            }
+        })
+    }
+
+    async retrieveMenuCluster() {
+        await this.cluster.task(async ({ page, data: url }) => {
+            console.log(url);
+        });
+    }
+
     async fetchMenu() {
         try {
             const query = [{
@@ -201,7 +240,6 @@ class zomato {
                     }
                 }
             }];
-            console.log(JSON.stringify(query));
             const data = await mongo.fetchRestaurantsAggregateCursor(query);
             data.eachAsync(async (doc) => {
                 try {
@@ -231,7 +269,7 @@ class zomato {
                     rej();
                 }
 
-                await page.waitFor(5000);
+                await page.waitFor(2000);
         
                 const data = await page.evaluate(function() {
                     const items = [];
@@ -291,7 +329,8 @@ async function asyncForEach(array, callback) {
 async function start() {
     await connectDB();
     const scraper = new zomato();
-    scraper.fetchMenu();
+    scraper.retrieveMenuCluster();
+    scraper.fetchMenuCluster();
 }
 
 async function connectDB() {
