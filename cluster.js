@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const request = require('request');
 const mongo = require('./mongo');
 const { Cluster } = require('puppeteer-cluster');
+const FS = require('fs');
 
 (async () => {
     const cluster = await Cluster.launch({
@@ -112,10 +113,16 @@ async function retrieveMenu(url, id, page) {
 
 async function fetchGroupby() {
     return new Promise((res, rej) => {
-        request.get('http://15.206.164.241:3000', (error, response, body) => {
-            if (error !== null) rej(error);
-            res(parseInt(body));
-        })
+        if (FS.existsSync('groupby.txt')) {
+            const groupBy = FS.readFileSync('groupby.txt', 'UTF-8');
+            res(parseInt(groupBy));
+        } else {
+            request.get('http://15.206.164.241:3000', (error, response, body) => {
+                if (error !== null) rej(error);
+                FS.writeFileSync('groupby.txt', parseInt(body));
+                res(parseInt(body));
+            })
+        }
     })
 }
 
