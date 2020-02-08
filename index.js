@@ -210,12 +210,15 @@ class zomato {
                 try {
                     console.log(`${doc.sLink.split('?')[0]}/order`);
                     await this.retrieveMenu(`${doc.sLink.split('?')[0]}/order`, doc._id);
+                    this.browser.close();
                 } catch(error) {
                     console.log(error);
+                    this.browser.close();
                 }
             })
         } catch(error) {
             console.log(error);
+            this.browser.close();
         }
     }
 
@@ -228,10 +231,7 @@ class zomato {
         
                 const response = await page.goto(url);
 
-                if (response.headers.status !== '200') {
-                    // this.browser.close();
-                    rej();
-                }
+                if (response.headers.status !== '200') rej();
 
                 await page.waitFor(5000);
         
@@ -272,11 +272,9 @@ class zomato {
                         await mongo.createItem(item);
                     });
                     await mongo.updateRestaurant({_id: id}, {bIsMenuFetched: true});
-                    // this.browser.close();
                 });
             } catch(error) {
                 await mongo.updateRestaurant({_id: id}, {bIsTried: true})
-                // this.browser.close();
                 rej(error)
             }
         })
