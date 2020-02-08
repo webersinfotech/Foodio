@@ -229,7 +229,7 @@ class zomato {
                 const response = await page.goto(url);
 
                 if (response.headers.status !== '200') {
-                    this.browser.close();
+                    // this.browser.close();
                     rej();
                 }
 
@@ -272,11 +272,11 @@ class zomato {
                         await mongo.createItem(item);
                     });
                     await mongo.updateRestaurant({_id: id}, {bIsMenuFetched: true});
-                    this.browser.close();
+                    // this.browser.close();
                 });
             } catch(error) {
                 await mongo.updateRestaurant({_id: id}, {bIsTried: true})
-                this.browser.close();
+                // this.browser.close();
                 rej(error)
             }
         })
