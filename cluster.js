@@ -35,8 +35,6 @@ const { Cluster } = require('puppeteer-cluster');
                 $ne: true
             }
         }
-    }, {
-        $limit: 10
     }];
 
     const data = await mongo.fetchRestaurantsAggregateCursor(query);
