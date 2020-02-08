@@ -102,7 +102,7 @@ async function retrieveMenu(url, id, page) {
             await mongo.updateRestaurant({_id: id}, {bIsMenuFetched: true});
             res();
         } catch(error) {
-            rej();
+            rej(error);
         }
     })
 }
