@@ -60,7 +60,7 @@ async function retrieveMenu(url, id, page) {
             console.log(url);
             if (response._status !== 200) rej();
     
-            await page.waitFor(2000);
+            await page.waitFor(5000);
     
             const data = await page.evaluate(function() {
                 const items = [];
