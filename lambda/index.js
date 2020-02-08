@@ -67,29 +67,6 @@ class Resturant {
         })
     }
 
-    async searchRestaurantMenu() {
-        const resturants = await mongo.fetchRestaurantsAggregate([{
-            $match: {
-                bIsDetailFetched: {
-                    $eq: true
-                }
-            }
-        }]);
-
-        await asyncForEach(resturants, async (resturant, index) => {
-            const data = await this.fetchDetail(resturant.R.res_id);
-            console.log(data);
-            if (typeof data.daily_menu === 'undefined') return;
-            try {
-                input_data.res_id = resturant.R.res_id;
-                input_data.internal_id = resturant._id;
-                await mongo.createMenu(input_data);
-            } catch (Error) {
-                console.log('Error occured: ', Error);
-            }
-        });
-    }
-
     async fetchDetail(query, area, area_type) {
         console.log(`https://developers.zomato.com/api/v2.1/search?q=${encodeURI(query)}&entity_id=${area}&entity_type=${area_type}`);
         return new Promise((res, rej) => {
@@ -110,23 +87,6 @@ class Resturant {
             });
         });
     }
-
-    async fetchMenu(res_id, id) {
-        console.log(`https://developers.zomato.com/api/v2.1/dailymenu?res_id=${res_id}`);
-        return new Promise((res, rej) => {
-            const options = {
-                url: `https://developers.zomato.com/api/v2.1/dailymenu?res_id=${res_id}`,
-                headers: {
-                    'user-key': 'a5a2d6c43257d676967e52b3e9675049'
-                }
-            };
-
-            request(options, function (error, response, body) {
-                if (error) rej(error);
-                res(JSON.parse(body));
-            });
-        });
-    }
 }
 
 async function asyncForEach(array, callback) {
@@ -135,5 +95,7 @@ async function asyncForEach(array, callback) {
     }
 }
 
-// const resturant = new Resturant();
-// resturant.searchRestaurant();
+exports.handler = async (event) => {
+    const resturant = new Resturant();
+    resturant.searchRestaurant();
+};

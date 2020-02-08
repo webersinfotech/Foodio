@@ -2,12 +2,6 @@ const puppeteer = require('puppeteer');
 const mongoose = require('mongoose');
 const mongo = require('./mongo')
 
-mongoose.connect('mongodb://localhost:27017/foodio', { promiseLibrary: global.Promise, useNewUrlParser: true }).then(() => {
-    console.log('Connected to database.');
-  }).catch((error) => {
-    console.log('Connection to Database failed.');
-});
-
 class zomato {
     constructor() {
         this.browser;
@@ -15,8 +9,8 @@ class zomato {
 
     async launchBrowser() {
         this.browser = await puppeteer.launch({
-            headless: false,
-            args: ['--no-sandbox']
+            // headless: false,
+            // args: ['--no-sandbox']
             // executablePath: 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe',
             // ignoreDefaultArgs: ['--disable-extensions']
         });
@@ -194,6 +188,99 @@ class zomato {
         await page.click('#signup-email');
         await page.waitFor(500);
     }
+
+    async fetchMenu() {
+        try {
+            const query = [{
+                $match: {
+                    bIsMenuFetched: {
+                        $ne: true
+                    },
+                    bIsTried: {
+                        $ne: true
+                    },
+                    groupBy: parseInt(process.argv[3])
+                }
+            }, {
+                $limit: parseInt(process.argv[2])
+            }];
+            console.log(JSON.stringify(query));
+            const data = await mongo.fetchRestaurantsAggregateCursor(query);
+            data.eachAsync(async (doc) => {
+                try {
+                    console.log(`${doc.sLink.split('?')[0]}/order`);
+                    await this.retrieveMenu(`${doc.sLink.split('?')[0]}/order`, doc._id);
+                } catch(error) {
+                    console.log(error);
+                }
+            })
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    async retrieveMenu(url, id) {
+        return new Promise(async (res, rej) => {
+            try {
+                await this.launchBrowser();
+
+                const page = await this.browser.newPage();
+        
+                const response = await page.goto(url);
+
+                if (response.headers.status !== '200') {
+                    this.browser.close();
+                    rej();
+                }
+
+                await page.waitFor(5000);
+        
+                const data = await page.evaluate(function() {
+                    const items = [];
+                    const categories = [];
+                    $('.category-container').each(function(elem, index) {
+                        const item = [];
+                        categories.push({
+                            sName: $(this).find('h3').text()
+                        });
+                        $(this).find('.item').each(function() {
+                            item.push({
+                                eType: getType(this),
+                                sName: $(this).find('.header').text(),
+                                sPrice: $(this).find('.description').text()
+                            })
+                        });
+                        items.push(item);
+                        function getType(that) {
+                            if ($(that).find('.tag').hasClass('veg')) return 'veg';
+                            else if ($(that).find('.tag').hasClass('nveg')) return 'non-veg';
+                            else return 'undefined'
+                        }
+                    });
+                    return {
+                        items: items,
+                        categories: categories
+                    }
+                });
+                await asyncForEach(data.categories, async (category, index) => {
+                    category.resId = id;
+                    const category_data = await mongo.createCategory(category);
+                    console.log(category_data);
+                    await asyncForEach(data.items[index], async (item) => {
+                        item.resId = id;
+                        item.iCategoryId = category_data._id;
+                        await mongo.createItem(item);
+                    });
+                    await mongo.updateRestaurant({_id: id}, {bIsMenuFetched: true});
+                    this.browser.close();
+                });
+            } catch(error) {
+                await mongo.updateRestaurant({_id: id}, {bIsTried: true})
+                this.browser.close();
+                rej(error)
+            }
+        })
+    }
 }
 
 async function asyncForEach(array, callback) {
@@ -202,5 +289,22 @@ async function asyncForEach(array, callback) {
     }
 }
 
-const scraper = new zomato();
-scraper.createeApi();
+async function start() {
+    await connectDB();
+    const scraper = new zomato();
+    scraper.fetchMenu();
+}
+
+async function connectDB() {
+    return new Promise((res, rej) => {
+        mongoose.connect('mongodb://foodioadmin:11999966@15.206.164.241:27017/Foodio', { promiseLibrary: global.Promise, useNewUrlParser: true }).then(() => {
+            console.log('Connected to database.');
+            res();
+        }).catch((error) => {
+            console.log('Connection to Database failed.');
+            rej();
+        });
+    })
+}
+
+start();
