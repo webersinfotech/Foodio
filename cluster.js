@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const mongoose = require('mongoose');
+const request = require('request');
 const mongo = require('./mongo');
 const { Cluster } = require('puppeteer-cluster');
 
@@ -22,11 +23,10 @@ const { Cluster } = require('puppeteer-cluster');
         } catch(error) {
             console.error(error);
         }
-
     });
-    
-    await mongoose.connect('mongodb://foodioadmin:11999966@15.206.164.241:27017/Foodio', { promiseLibrary: global.Promise, useNewUrlParser: true });
 
+    await mongoose.connect('mongodb://foodioadmin:11999966@15.206.164.241:27017/Foodio', { promiseLibrary: global.Promise, useNewUrlParser: true });
+    
     const query = [{
         $match: {
             bIsMenuFetched: {
@@ -34,7 +34,8 @@ const { Cluster } = require('puppeteer-cluster');
             },
             bIsTried: {
                 $ne: true
-            }
+            },
+            groupBy: await fetchGroupby()
         }
     }];
 
@@ -106,6 +107,15 @@ async function retrieveMenu(url, id, page) {
             await mongo.updateRestaurant({_id: id}, {bIsTried: true});
             rej(error);
         }
+    })
+}
+
+async function fetchGroupby() {
+    return new Promise((res, rej) => {
+        request.get('http://15.206.164.241:3000', (error, response, body) => {
+            if (error !== null) rej(error);
+            res(parseInt(body));
+        })
     })
 }
 
