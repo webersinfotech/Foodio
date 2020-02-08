@@ -35,7 +35,7 @@ class Mongoose {
     }
 
     fetchRestaurantsAggregateCursor(query) {
-        return restaurants.aggregate(query).cursor({ batchSize: 1 }).exec();
+        return restaurants.aggregate(query).cursor({ batchSize: 10 }).exec();
     }
 
     updateRestaurant(query, data) {

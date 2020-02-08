@@ -6,7 +6,7 @@ const { Cluster } = require('puppeteer-cluster');
 (async () => {
     const cluster = await Cluster.launch({
         concurrency: Cluster.CONCURRENCY_CONTEXT,
-        maxConcurrency: 25,
+        maxConcurrency: 10,
         puppeteerOptions: {
             headless: true
         },
@@ -60,7 +60,7 @@ async function retrieveMenu(url, id, page) {
             console.log(url);
             if (response._status !== 200) rej();
     
-            await page.waitFor(5000);
+            await page.waitFor(2000);
     
             const data = await page.evaluate(function() {
                 const items = [];
