@@ -26,7 +26,11 @@ const FS = require('fs');
         }
     });
 
-    await mongoose.connect('mongodb://foodioadmin:11999966@15.206.164.241:27017/Foodio', { promiseLibrary: global.Promise, useNewUrlParser: true });
+    try {
+        await mongoose.connect('mongodb://foodioadmin:11999966@15.206.164.241:27017/Foodio', { promiseLibrary: global.Promise, useNewUrlParser: true });
+    } catch(error) {
+        console.log(error);
+    }
     
     const query = [{
         $match: {
