@@ -7,6 +7,15 @@ app.get('/', (req, res) => {
     group++;
 })
 
+app.get('/current', (req, res) => {
+    res.send(`${group}`);
+})
+
+app.get('/:group', (req, res) => {
+    group = parseInt(req.params.group);
+    res.send(`${group}`);
+})
+
 app.listen(3000, () => {
     console.log('Listening on 3000');
 })
