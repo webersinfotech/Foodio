@@ -13,7 +13,7 @@ const FS = require('fs');
             headless: true,
             args: ['--no-sandbox']
         },
-        // monitor: true
+        monitor: true
     });
 
     await cluster.task(async ({ page, data }) => {
