@@ -4,6 +4,7 @@ const restaurants = require('./models/restaurants.modal');
 const menu = require('./models/menu.modal');
 const categories = require('./models/categories.modal');
 const items = require('./models/items.modal');
+const counter = require('./models/counter.modal');
 
 class Mongoose {
     createCities(data) {
@@ -42,6 +43,14 @@ class Mongoose {
         return restaurants.updateOne(query, data);
     }
 
+    updateManyRestaurant(query, data) {
+        return restaurants.updateMany(query, data);
+    }
+
+    // fetchRestaurant(query) {
+    //     return restaurants.find(query).count();
+    // }
+
     createMenu(data) {
         return menu.insertMany(data);
     }
@@ -52,6 +61,19 @@ class Mongoose {
 
     createItem(data) {
         return items.insertMany(data);
+    }
+
+    MenuFetchedRestauarants() {
+        return items.distinct('resId');
+    }
+
+    fetchCounter() {
+        return counter.find({});
+    }
+
+    incCounter(counterData) {
+        const updateData = typeof counterData === 'undefined' ? {$inc: { counter: 1 }} : {counter: Number(counterData)};
+        return counter.findOneAndUpdate({}, updateData, {new: true});
     }
 }
 

@@ -63,8 +63,6 @@ async function retrieveMenu(url, id, page) {
     return new Promise(async (res, rej) => {
         try {
             const response = await page.goto(url);
-            console.log(response._status);
-            console.log(url);
             if (response._status !== 200) rej();
     
             await page.waitFor(5000);
@@ -96,7 +94,6 @@ async function retrieveMenu(url, id, page) {
                     categories: categories
                 }
             });
-            console.log(data);
             await asyncForEach(data.categories, async (category, index) => {
                 category.resId = id;
                 const category_data = await mongo.createCategory(category);
