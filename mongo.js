@@ -31,6 +31,10 @@ class Mongoose {
         return restaurants.insertMany(data);
     }
 
+    findRestaurants(query) {
+        return restaurants.find(query);
+    }
+
     fetchRestaurantsAggregate(query) {
         return restaurants.aggregate(query);
     }
