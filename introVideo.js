@@ -48,6 +48,7 @@ const FS = require('fs');
     const data = await mongo.fetchRestaurantsAggregateCursor(query);
     data.eachAsync(async (doc) => {
         try {
+            console.log(`http://localhost:3001/${doc._id}`);
             cluster.queue({url: `http://localhost:3001/${doc._id}`, ID: doc._id});
         } catch(error) {
             console.log(error);
@@ -67,6 +68,7 @@ async function recordScreen(url, id, page) {
                 output: 'output.webm',
                 fps: 60,
                 frames: 60 * 5, // 5 seconds at 60 fps
+                pipeOutput: true,
                 prepare: function () {}, // <-- add this line
                 render: function () {} // <-- add this line
             });
