@@ -73,9 +73,7 @@ async function recordScreen(url, id, page) {
                 render: function () {} // <-- add this line
             });
 
-            await page.waitFor(5000);
-
-            await page.waitFor(5000);
+            await page.waitFor(120000);
 
             console.log('Finished');
         } catch(error) {
