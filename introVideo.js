@@ -59,11 +59,6 @@ const FS = require('fs');
 async function recordScreen(url, id, page) {
     return new Promise(async (res, rej) => {
         try {
-            await page.setViewport({
-                width: 1920,
-                height: 1080,
-            });
-            
             await page.goto(url);
 
             await page.waitFor(5000);
