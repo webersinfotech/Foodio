@@ -13,7 +13,7 @@ const FS = require('fs');
         puppeteerOptions: {
             headless: false,
             defaultViewport: null,
-            args: ['--disable-setuid-sandbox', '--no-sandbox', '--enable-usermedia-screen-capturing', '--allow-http-screen-capture', '--auto-select-desktop-capture-source=Frost- Multipurpose Coming Soon', '--use-views'] // '--window-size=1366,768', 
+            args: ['--disable-setuid-sandbox', '--headless', '--no-sandbox', '--enable-usermedia-screen-capturing', '--allow-http-screen-capture', '--auto-select-desktop-capture-source=Frost- Multipurpose Coming Soon', '--use-views'] // '--window-size=1366,768', 
         },
         monitor: false
     });
