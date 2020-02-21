@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const mongoose = require('mongoose');
 const mongo = require('./mongo');
 const { Cluster } = require('puppeteer-cluster');
+const { record } = require('puppeteer-recorder');
 const request = require('request');
 const FS = require('fs');
 
@@ -60,6 +61,19 @@ async function recordScreen(url, id, page) {
             await page.goto(url);
 
             await page.waitFor(5000);
+
+            await record({
+                page: page, // Optional: a puppeteer Page instance,
+                output: 'output.webm',
+                fps: 60,
+                frames: 60 * 5, // 5 seconds at 60 fps
+                prepare: function () {}, // <-- add this line
+                render: function () {} // <-- add this line
+            });
+
+            await page.waitFor(5000);
+
+            console.log('Finished');
         } catch(error) {
             rej(error);
         }
