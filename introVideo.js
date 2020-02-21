@@ -11,7 +11,7 @@ const FS = require('fs');
         concurrency: Cluster.CONCURRENCY_CONTEXT,
         maxConcurrency: 1,
         puppeteerOptions: {
-            headless: false,
+            headless: true,
             args: ['--no-sandbox']
         },
         monitor: false
