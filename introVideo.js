@@ -63,6 +63,7 @@ async function recordScreen(url, id, page) {
                 width: 1920,
                 height: 1080,
             });
+            
             await page.goto(url);
 
             await page.waitFor(5000);
@@ -76,6 +77,8 @@ async function recordScreen(url, id, page) {
                 prepare: function () {}, // <-- add this line
                 render: function () {} // <-- add this line
             });
+
+            await page.waitFor(5000);
 
             await page.waitFor(5000);
 
