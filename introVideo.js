@@ -11,16 +11,16 @@ const FS = require('fs');
         concurrency: Cluster.CONCURRENCY_CONTEXT,
         maxConcurrency: 1,
         puppeteerOptions: {
-            headless: false,
+            headless: true,
             defaultViewport: null,
-            args: ['--disable-setuid-sandbox', '--no-sandbox', '--enable-usermedia-screen-capturing', '--allow-http-screen-capture', '--auto-select-desktop-capture-source=Frost- Multipurpose Coming Soon', '--use-views'] // '--window-size=1366,768', 
+            args: ['--no-sandbox', '--enable-usermedia-screen-capturing', '--allow-http-screen-capture', '--auto-select-desktop-capture-source=Frost- Multipurpose Coming Soon', '--use-views'] // '--window-size=1366,768', 
         },
         monitor: false
     });
 
     await cluster.task(async ({ page, data }) => {
         const { url, ID } = data;
-        await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36');
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3419.0 Safari/537.36');
         try {
             await recordScreen(url, ID, page);
             console.log(url, ID);
