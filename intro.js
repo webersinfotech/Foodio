@@ -16,6 +16,6 @@ app.get('/:id', async (req, res) => {
     res.render(`${__dirname}/theme/index.ejs`, { sName : resurant[0].sName });
 })
 
-app.listen(3000, () => {
+app.listen(3001, () => {
     console.log('Listening on 3000');
 })

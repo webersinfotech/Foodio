@@ -48,7 +48,7 @@ const FS = require('fs');
     const data = await mongo.fetchRestaurantsAggregateCursor(query);
     data.eachAsync(async (doc) => {
         try {
-            cluster.queue({url: `http://localhost:3000/${doc._id}`, ID: doc._id});
+            cluster.queue({url: `http://localhost:3001/${doc._id}`, ID: doc._id});
         } catch(error) {
             console.log(error);
         }
