@@ -71,13 +71,13 @@ async function recordScreen(url, id, page) {
                 page: page, // Optional: a puppeteer Page instance,
                 output: 'output.webm',
                 fps: 60,
-                frames: 60 * 5, // 5 seconds at 60 fps
+                frames: 60 * 2, // 5 seconds at 60 fps
                 pipeOutput: true,
                 prepare: function () {}, // <-- add this line
                 render: function () {} // <-- add this line
             });
 
-            await page.waitFor(10000);
+            await page.waitFor(5000);
 
             console.log('Finished');
         } catch(error) {
