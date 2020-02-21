@@ -75,6 +75,8 @@ async function recordScreen(url, id, page) {
 
             await page.waitFor(120000);
 
+            await page.close();
+
             console.log('Finished');
         } catch(error) {
             rej(error);
