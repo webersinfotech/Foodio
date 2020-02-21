@@ -64,7 +64,7 @@ async function recordScreen(url, id, page) {
             await page.waitFor(5000);
 
             asyncForEach([,,], async (ele, index) => {
-                await page.screenshot({path: `assets/intro.png`});
+                await page.screenshot({path: `intro-${index}.png`});
             })
 
             // await record({
