@@ -63,7 +63,9 @@ async function recordScreen(url, id, page) {
 
             await page.waitFor(5000);
 
-            await page.screenshot({path: 'intro.png'});
+            asyncForEach([,,], async (ele, index) => {
+                await page.screenshot({path: `./assets/intro.png`});
+            })
 
             // await record({
             //     page: page, // Optional: a puppeteer Page instance,
@@ -97,4 +99,10 @@ async function fetchGroupby() {
             })
         }
     })
+}
+
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array);
+    }
 }
