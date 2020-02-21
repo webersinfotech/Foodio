@@ -50,11 +50,23 @@
 			<div class="clearfix dez-coming-bx">
 				
 				<div class="dez-content top-center posi-center">
-					<h2 class="dez-title ml2 wow fadeInUp" data-wow-duration="1.5s" data-wow-delay="1.5s">WELCOME TO <br> <%= sName %></h2>
+					<div class="welcome">
+						<h2 class="dez-title ml2 wow fadeInLeft" data-wow-duration="1.5s" data-wow-delay="1.5s">WELCOME</h2>
+					    <h2 class="dez-title ml2 wow fadeInRight" data-wow-duration="1.5s" data-wow-delay="1.5s"><%= sName %></h2>
+					</div>
+					<div class="out" style="display: none">
+						<h2 class="dez-title ml2 wow fadeOutRight" data-wow-duration="1.5s" data-wow-delay="5s">WELCOME</h2>
+					    <h2 class="dez-title ml2 wow fadeOutLeft" data-wow-duration="1.5s" data-wow-delay="5s"><%= sName %></h2>
+					</div>
 				</div>
             </div>
         </div>
 </div>
+<!-- <button id="btn-start-recording">Start Recording</button>
+<button id="btn-stop-recording" disabled>Stop Recording</button>
+
+<hr>
+<video controls autoplay playsinline></video> -->
 <!-- JavaScript  files ========================================= -->
 <script src="js/jquery.min.js"></script><!-- JQUERY.MIN JS -->
 <script src="plugins/bootstrap/js/popper.min.js"></script><!-- POPPER.MIN JS -->
@@ -75,7 +87,170 @@
 <script src="plugins/anime/anime.min.js"></script><!-- CUSTOM FUCTIONS  -->
 <script src="plugins/anime/app.js"></script><!-- CUSTOM FUCTIONS  -->
 <script src='../../www.google.com/recaptcha/api.js'></script> <!-- Google API For Recaptcha  -->
+<script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
 <div class="site-nav-overlay js-nav" style="opacity: 0;"></div>
+<script>
+	$(document).ready(() => {
+		setTimeout(() => {
+			$('.out').show();
+			$('.welcome').hide();
+		}, 5000);
+
+		setTimeout(() => {
+			$('.out').hide();
+		}, 11000)
+
+		var video = document.querySelector('video');
+
+		function invokeGetDisplayMedia(success, error) {
+			var displaymediastreamconstraints = {
+				video: {
+					displaySurface: 'monitor', // monitor, window, application, browser
+					logicalSurface: true,
+					cursor: 'never' // never, always, motion
+				}
+			};
+
+			displaymediastreamconstraints = {
+				video: true
+			};
+
+			if(navigator.mediaDevices.getDisplayMedia) {
+				navigator.mediaDevices.getDisplayMedia(displaymediastreamconstraints).then(success).catch(error);
+			}
+			else {
+				navigator.getDisplayMedia(displaymediastreamconstraints).then(success).catch(error);
+			}
+		}
+
+		function captureScreen(callback) {
+			invokeGetDisplayMedia(function(screen) {
+				addStreamStopListener(screen, function() {
+					document.getElementById('btn-stop-recording').click();
+				});
+				callback(screen);
+			}, function(error) {
+				alert('Unable to capture your screen. Please check console logs.\n' + error);
+			});
+		}
+
+		function stopRecordingCallback() {
+			// video.src = video.srcObject = null;
+			// video.src = URL.createObjectURL(recorder.getBlob());
+
+			console.log(URL.createObjectURL(recorder.getBlob()));
+
+			const fd = new FormData();
+			fd.append('video', recorder.getBlob(), `${Math.floor((Math.random() * 100000) + 1)}.webm`);
+
+			$.ajax({
+				method: "POST",
+				url: 'video',
+				data: fd,
+				processData: false,
+				contentType: false,
+				success: function(response) {
+					console.log('Success');
+				},
+				error: function(response) {
+					console.log('Error occured');
+				}
+			});
+
+			// $.post("video", { name: "John", time: "2pm" }, function( data ) {
+			// 	console.log('Data posted success')
+			// });
+
+			recorder.screen.stop();
+			recorder.destroy();
+			recorder = null;
+
+			// document.getElementById('btn-start-recording').disabled = false;
+
+		}
+
+		var recorder;
+
+		captureScreen(function(screen) {
+			// video.srcObject = screen;
+
+			recorder = RecordRTC(screen, {
+				type: 'video',
+				mimeType: 'video/webm;codecs=vp9',
+				videoBitsPerSecond: 128000000,
+				frameRate: 60
+			});
+
+			recorder.startRecording();
+
+			recorder.screen = screen;
+
+			setTimeout(() => {
+				recorder.stopRecording(stopRecordingCallback);
+			}, 11000);
+
+			// document.getElementById('btn-stop-recording').disabled = false;
+		});
+
+		// document.getElementById('btn-start-recording').onclick = function() {
+		// 	this.disabled = true;
+		// 	captureScreen(function(screen) {
+		// 		video.srcObject = screen;
+
+		// 		recorder = RecordRTC(screen, {
+		// 			type: 'video'
+		// 		});
+
+		// 		recorder.startRecording();
+
+		// 		recorder.screen = screen;
+
+		// 		document.getElementById('btn-stop-recording').disabled = false;
+		// 	});
+		// };
+
+		// document.getElementById('btn-stop-recording').onclick = function() {
+		// 	this.disabled = true;
+        //     recorder.stopRecording(stopRecordingCallback);
+		// };
+
+		function addStreamStopListener(stream, callback) {
+			stream.addEventListener('ended', function() {
+				callback();
+				callback = function() {};
+			}, false);
+			stream.addEventListener('inactive', function() {
+				callback();
+				callback = function() {};
+			}, false);
+			stream.getTracks().forEach(function(track) {
+				track.addEventListener('ended', function() {
+					callback();
+					callback = function() {};
+				}, false);
+				track.addEventListener('inactive', function() {
+					callback();
+					callback = function() {};
+				}, false);
+			});
+		}
+
+		// captureScreen(function(screen) {
+		// 	console.log(screen);
+		// 	// video.srcObject = screen;
+
+		// 	recorder = RecordRTC(screen, {
+		// 		type: 'video'
+		// 	});
+
+		// 	recorder.startRecording();
+
+		// 	setTimeout(async () => {
+		// 		recorder.stopRecording();
+		// 	}, 5000)
+		// });
+	})
+</script>
 </body>
 
 <!-- Mirrored from frost.dexignzone.com/xhtml/index-14.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 14 Feb 2020 16:23:09 GMT -->

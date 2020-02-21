@@ -12,7 +12,8 @@ const FS = require('fs');
         maxConcurrency: 1,
         puppeteerOptions: {
             headless: true,
-            args: ['--no-sandbox `--window-size=1920,1080']
+            defaultViewport: null,
+            args: ['--no-sandbox', '--enable-usermedia-screen-capturing', '--allow-http-screen-capture', '--auto-select-desktop-capture-source=Frost- Multipurpose Coming Soon', '--use-views'] // '--window-size=1366,768', 
         },
         monitor: false
     });
@@ -61,11 +62,11 @@ async function recordScreen(url, id, page) {
         try {
             await page.goto(url);
 
-            await page.waitFor(5000);
+            await page.waitFor(25000);
 
-            asyncForEach([,,], async (ele, index) => {
-                await page.screenshot({path: `intro-${index}.png`});
-            })
+            // asyncForEach([,,], async (ele, index) => {
+            //     await page.screenshot({path: `intro-${index}.png`});
+            // })
 
             // await record({
             //     page: page, // Optional: a puppeteer Page instance,
