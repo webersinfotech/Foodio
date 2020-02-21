@@ -11,7 +11,7 @@ const FS = require('fs');
         concurrency: Cluster.CONCURRENCY_CONTEXT,
         maxConcurrency: 1,
         puppeteerOptions: {
-            headless: true,
+            headless: false,
             defaultViewport: null,
             args: ['--no-sandbox', '--enable-usermedia-screen-capturing', '--allow-http-screen-capture', '--auto-select-desktop-capture-source=Frost- Multipurpose Coming Soon', '--use-views'] // '--window-size=1366,768', 
         },
