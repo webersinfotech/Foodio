@@ -55,8 +55,51 @@
 					    <h2 class="dez-title ml2 wow fadeInRight" data-wow-duration="1.5s" data-wow-delay="1.5s"><%= sName %></h2>
 					</div>
 					<div class="out" style="display: none">
-						<h2 class="dez-title ml2 wow fadeOutRight" data-wow-duration="1.5s" data-wow-delay="5s">WELCOME</h2>
-					    <h2 class="dez-title ml2 wow fadeOutLeft" data-wow-duration="1.5s" data-wow-delay="5s"><%= sName %></h2>
+						<h2 class="dez-title ml2 wow fadeOutRight" data-wow-duration="1.5s" data-wow-delay="0.5s">WELCOME</h2>
+					    <h2 class="dez-title ml2 wow fadeOutLeft" data-wow-duration="1.5s" data-wow-delay="0.5s"><%= sName %></h2>
+					</div>
+					<div class="selling" style="display: none">
+						<h2 class="dez-title ml2 wow fadeInDown" data-wow-duration="1.5s" data-wow-delay="0s">ARE YOU PAYING HIGH COMMISSION</h2>
+					    <h2 class="dez-title ml2 wow fadeInUp" data-wow-duration="1.5s" data-wow-delay="0s">FOR SELLING FOOD ONLINE?</h2>
+					</div>
+					<div class="sellingout" style="display: none">
+						<h2 class="dez-title ml2 wow fadeOutUp" data-wow-duration="1.5s" data-wow-delay="1.5s">ARE YOU PAYING HIGH COMMISSION</h2>
+					    <h2 class="dez-title ml2 wow fadeOutDown" data-wow-duration="1.5s" data-wow-delay="1.5s">FOR SELLING FOOD ONLINE?</h2>
+					</div>
+					<div class="over" style="display: none">
+						<h2 class="dez-title ml2 wow bounceIn" data-wow-duration="1.5s" data-wow-delay="0s">NOW IT'S OVER</h2>
+					    <h2 class="dez-title ml2 wow bounceIn" data-wow-duration="1.5s" data-wow-delay="0s">GRAB YOUR OWN APPLICATION</h2>
+					</div>
+					<div class="overOut" style="display: none">
+						<h2 class="dez-title ml2 wow bounceOut" data-wow-duration="1.5s" data-wow-delay="0.5s">NOW IT'S OVER</h2>
+					    <h2 class="dez-title ml2 wow bounceOut" data-wow-duration="1.5s" data-wow-delay="0.5s">GRAB YOUR OWN APPLICATION</h2>
+					</div>
+					<div class="amount" style="display: none">
+						<h2 class="dez-title ml2 wow rollIn" data-wow-duration="1.5s" data-wow-delay="0s">PAY ONLY ₹100</h2>
+					    <h2 class="dez-title ml2 wow rollIn" data-wow-duration="1.5s" data-wow-delay="0s">PRE-REGISTRATION AMOUNT</h2>
+					</div>
+					<div class="amountOut" style="display: none">
+						<h2 class="dez-title ml2 wow rollOut" data-wow-duration="1.5s" data-wow-delay="1.5s">PAY ONLY ₹100</h2>
+					    <h2 class="dez-title ml2 wow rollOut" data-wow-duration="1.5s" data-wow-delay="1.5s">PRE-REGISTRATION AMOUNT</h2>
+					</div>
+					<div class="amount2" style="display: none">
+						<h2 class="dez-title ml2 wow zoomIn" data-wow-duration="1.5s" data-wow-delay="0s">THEN AFTER FREE</h2>
+					    <h2 class="dez-title ml2 wow zoomIn" data-wow-duration="1.5s" data-wow-delay="0s">FOR 6 MONTHS</h2>
+					</div>
+					<div class="amount2Out" style="display: none">
+						<h2 class="dez-title ml2 wow zoomOut" data-wow-duration="1.5s" data-wow-delay="1.5s">THEN AFTER FREE</h2>
+					    <h2 class="dez-title ml2 wow zoomOut" data-wow-duration="1.5s" data-wow-delay="1.5s">FOR 6 MONTHS</h2>
+					</div>
+					<div class="waiting" style="display: none">
+						<h1 class="dez-title ml2 wow flipInX" data-wow-duration="1.5s" data-wow-delay="0s">SO WHAT ARE YOU WAITING FOR?</h1>
+					</div>
+					<div class="waitingOut" style="display: none">
+						<h1 class="dez-title ml2 wow flipOutX" data-wow-duration="1.5s" data-wow-delay="1.5s">SO WHAT ARE YOU WAITING FOR?</h1>
+					</div>
+					<div class="whatsapp" style="display: none">
+						<h2 class="dez-title ml2 wow rubberBand" data-wow-duration="1.5s" data-wow-delay="0s">JUST CONTACT US</h2>
+						<h2 class="dez-title ml2 wow rubberBand" data-wow-duration="1.5s" data-wow-delay="0s">CALL - +917990089984</h2>
+						<h2 class="dez-title ml2 wow rubberBand" data-wow-duration="1.5s" data-wow-delay="0s">WHATSAPP - +919429058733</h2>
 					</div>
 				</div>
             </div>
@@ -98,7 +141,63 @@
 
 		setTimeout(() => {
 			$('.out').hide();
-		}, 11000)
+			$('.selling').show();
+		}, 7000)
+
+		setTimeout(() => {
+			$('.selling').hide();
+			$('.sellingout').show();
+		}, 9000)
+
+		setTimeout(() => {
+			$('.sellingout').hide();
+			$('.over').show();
+		}, 12000)
+
+		setTimeout(() => {
+			$('.sellingout').hide();
+			$('.over').show();
+		}, 13000)
+
+		setTimeout(() => {
+			$('.over').hide();
+			$('.overOut').show();
+		}, 15000)
+
+		setTimeout(() => {
+			$('.overOut').hide();
+			$('.amount').show();
+		}, 17000)
+
+		setTimeout(() => {
+			$('.amount').hide();
+			$('.amountOut').show();
+		}, 20000)
+
+		setTimeout(() => {
+			$('.amountOut').hide();
+			$('.amount2').show();
+		}, 23000)
+
+		setTimeout(() => {
+			$('.amount2').hide();
+			$('.amount2Out').show();
+		}, 25000)
+
+		setTimeout(() => {
+			$('.amount2Out').hide();
+			$('.waiting').show();
+		}, 28000)
+
+		setTimeout(() => {
+			$('.waiting').hide();
+			$('.waitingOut').show();
+		}, 30000)
+
+		setTimeout(() => {
+			$('.waitingOut').hide();
+			$('.whatsapp').show();
+		}, 33000)
 
 		var video = document.querySelector('video');
 
@@ -187,7 +286,7 @@
 
 			setTimeout(() => {
 				recorder.stopRecording(stopRecordingCallback);
-			}, 11000);
+			}, 40000);
 
 			// document.getElementById('btn-stop-recording').disabled = false;
 		});

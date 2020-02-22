@@ -10,10 +10,11 @@ const FS = require('fs');
     const cluster = await Cluster.launch({
         concurrency: Cluster.CONCURRENCY_CONTEXT,
         maxConcurrency: 1,
+        timeout: 60000,
         puppeteerOptions: {
             headless: false,
             defaultViewport: null,
-            args: ['--no-sandbox', '--enable-usermedia-screen-capturing', '--allow-http-screen-capture', '--auto-select-desktop-capture-source=Frost- Multipurpose Coming Soon', '--use-views'] // '--window-size=1366,768', 
+            args: ['--window-size=1600,1200', '--no-sandbox', '--enable-usermedia-screen-capturing', '--allow-http-screen-capture', '--auto-select-desktop-capture-source=Frost- Multipurpose Coming Soon', '--use-views'] // '--window-size=1366,768', 
         },
         monitor: false
     });
@@ -23,7 +24,6 @@ const FS = require('fs');
         await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3419.0 Safari/537.36');
         try {
             await recordScreen(url, ID, page);
-            console.log(url, ID);
         } catch(error) {
             console.error(error);
         }
@@ -62,7 +62,9 @@ async function recordScreen(url, id, page) {
         try {
             await page.goto(url);
 
-            await page.waitFor(25000);
+            await page.waitFor(60000);
+
+            res();
 
             // asyncForEach([,,], async (ele, index) => {
             //     await page.screenshot({path: `intro-${index}.png`});
