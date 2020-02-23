@@ -46,7 +46,7 @@ async function recordScreen(url, id, page) {
         try {
             await page.goto(url);
 
-            await page.waitFor(60000);
+            await page.waitFor(120000);
 
             res();
         } catch(error) {
