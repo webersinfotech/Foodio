@@ -62,7 +62,10 @@ async function uploadVideo(filename, id) {
     })
 
     cloudinary.uploader.upload(filename, {resource_type: "video", format: 'webm'}, async (err, res) => {
-        if (err) console.log(err);
+        if (err) {
+            console.log(err);
+            return;
+        }
         await mongo.updateRestaurant({_id: id}, {
             bIsIntroCaptured: true,
             videoUrl: res.secure_url
