@@ -9,7 +9,7 @@ const FS = require('fs');
 (async () => {
     const cluster = await Cluster.launch({
         concurrency: Cluster.CONCURRENCY_CONTEXT,
-        maxConcurrency: 5,
+        maxConcurrency: 1,
         timeout: 60000,
         puppeteerOptions: {
             headless: false,
