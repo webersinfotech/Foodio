@@ -5,6 +5,7 @@ const menu = require('./models/menu.modal');
 const categories = require('./models/categories.modal');
 const items = require('./models/items.modal');
 const counter = require('./models/counter.modal');
+const cloudinary = require('./models/cloudinary.modal');
 
 class Mongoose {
     createCities(data) {
@@ -78,6 +79,14 @@ class Mongoose {
     incCounter(counterData) {
         const updateData = typeof counterData === 'undefined' ? {$inc: { counter: 1 }} : {counter: Number(counterData)};
         return counter.findOneAndUpdate({}, updateData, {new: true});
+    }
+
+    fetchCloudinary(query) {
+        return cloudinary.find(query);
+    }
+
+    updateOnceCloudinary(query, data) {
+        return cloudinary.findOneAndUpdate(query, data);
     }
 }
 

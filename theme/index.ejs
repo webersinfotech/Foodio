@@ -244,7 +244,7 @@
 
 			$.ajax({
 				method: "POST",
-				url: 'video',
+				url: 'video/<%= _id %>',
 				data: fd,
 				processData: false,
 				contentType: false,
@@ -286,7 +286,7 @@
 
 			setTimeout(() => {
 				recorder.stopRecording(stopRecordingCallback);
-			}, 40000);
+			}, 1000); // 40000
 
 			// document.getElementById('btn-stop-recording').disabled = false;
 		});

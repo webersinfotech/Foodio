@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const mongo = require('./mongo');
 const FS = require('fs');
 const multer  = require('multer');
-const path = require('path')
+const path = require('path');
+const cloudinary = require('cloudinary').v2;
 const app = express();
 
 app.use(express.urlencoded({
@@ -38,13 +39,38 @@ const type = upload.single('video');
 
 app.get('/:id', async (req, res) => {
     const resurant = await mongo.findRestaurants({_id: req.params.id});
-    res.render(`${__dirname}/theme/index.ejs`, { sName : resurant[0].sName });
+    res.render(`${__dirname}/theme/index.ejs`, { sName : resurant[0].sName, _id: req.params.id });
 })
 
-app.post('/video', type, (req, res) => {
+app.post('/video/:id', type, (req, res) => {
     console.log('I am fired');
-    console.log(req.file);
+    console.log(req.file, req.params.id);
+    uploadVideo(req.file.filename, req.params.id);
 })
+
+async function uploadVideo(filename, id) {
+    const query = {
+        inUse: true
+    };
+
+    const cloudacc = await mongo.fetchCloudinary(query);
+
+    cloudinary.config({
+        cloud_name: cloudacc[0].cloudName,
+        api_key: cloudacc[0].apiKey,
+        api_secret: cloudacc[0].apiSecret
+    })
+
+    cloudinary.uploader.upload(filename, {resource_type: "video", format: 'webm'}, async (err, res) => {
+        if (err) console.log(err);
+        await mongo.updateRestaurant({_id: id}, {
+            bIsIntroCaptured: true,
+            videoUrl: res.secure_url
+        })
+        FS.unlinkSync(filename);
+        console.log(res.secure_url);
+    })
+}
 
 app.listen(3001, () => {
     console.log('Listening on 3000');

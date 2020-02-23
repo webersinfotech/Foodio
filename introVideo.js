@@ -9,7 +9,7 @@ const FS = require('fs');
 (async () => {
     const cluster = await Cluster.launch({
         concurrency: Cluster.CONCURRENCY_CONTEXT,
-        maxConcurrency: 1,
+        maxConcurrency: 5,
         timeout: 60000,
         puppeteerOptions: {
             headless: false,
@@ -43,7 +43,7 @@ const FS = require('fs');
             groupBy: await fetchGroupby()
         }
     }, {
-        $limit: 1
+        $limit: 1000
     }];
 
     const data = await mongo.fetchRestaurantsAggregateCursor(query);
@@ -65,24 +65,6 @@ async function recordScreen(url, id, page) {
             await page.waitFor(60000);
 
             res();
-
-            // asyncForEach([,,], async (ele, index) => {
-            //     await page.screenshot({path: `intro-${index}.png`});
-            // })
-
-            // await record({
-            //     page: page, // Optional: a puppeteer Page instance,
-            //     output: 'output.webm',
-            //     fps: 60,
-            //     frames: 60 * 2, // 5 seconds at 60 fps
-            //     pipeOutput: true,
-            //     prepare: function () {}, // <-- add this line
-            //     render: function () {} // <-- add this line
-            // });
-
-            // await page.waitFor(120000);
-
-            console.log('Finished');
         } catch(error) {
             rej(error);
         }
