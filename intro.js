@@ -70,7 +70,9 @@ async function uploadVideo(filename, id) {
             bIsIntroCaptured: true,
             videoUrl: res.secure_url
         })
-        FS.unlinkSync(filename);
+        setTimeout(() => {
+            FS.unlinkSync(filename);
+        }, 10000)
         console.log(res.secure_url);
     })
 }
