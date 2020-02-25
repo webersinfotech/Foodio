@@ -66,13 +66,16 @@ async function uploadVideo(filename, id) {
             console.log(err);
             return;
         }
+
         await mongo.updateRestaurant({_id: id}, {
             bIsIntroCaptured: true,
             videoUrl: res.secure_url
         })
+
         setTimeout(() => {
             FS.unlinkSync(filename);
         }, 10000)
+        
         console.log(res.secure_url);
     })
 }
