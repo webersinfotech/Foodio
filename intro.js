@@ -27,7 +27,7 @@ app.use(express.static('assets'));
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, __dirname)
+      cb(null, `${__dirname}/assets/`)
     },
     filename: function (req, file, cb) {
       cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
@@ -61,8 +61,8 @@ async function uploadVideo(filename, id) {
         api_key: cloudacc[0].apiKey,
         api_secret: cloudacc[0].apiSecret
     })
-
-    cloudinary.uploader.upload(filename, {resource_type: "video", format: 'webm'}, async (err, res) => {
+    console.log(`${await publicIp.v4()}:3001/assets/${filename}`);
+    cloudinary.uploader.upload(`${await publicIp.v4()}:3001/assets/${filename}`, {resource_type: "video", format: 'webm'}, async (err, res) => {
         if (err) {
             console.log(err);
             return;
@@ -82,6 +82,5 @@ async function uploadVideo(filename, id) {
 }
 
 app.listen(3001, async () => {
-    console.log(`${await publicIp.v4()}:3001/1582819886659.webm`);
     console.log('Listening on 3000');
 })
