@@ -82,5 +82,5 @@ async function uploadVideo(filename, id) {
 }
 
 app.listen(3001, async () => {
-    console.log('Listening on 3000');
+    console.log('Listening on 3001');
 })
