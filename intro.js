@@ -74,7 +74,7 @@ async function uploadVideo(filename, id) {
         })
 
         setTimeout(() => {
-            FS.unlinkSync(filename);
+            FS.unlinkSync(`${__dirname}/assets/${filename}`);
         }, 10000)
         
         console.log(res.secure_url);
