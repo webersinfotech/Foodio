@@ -61,8 +61,8 @@ async function uploadVideo(filename, id) {
         api_key: cloudacc[0].apiKey,
         api_secret: cloudacc[0].apiSecret
     })
-    console.log(`${await publicIp.v4()}:3001/assets/${filename}`);
-    cloudinary.uploader.upload(`${await publicIp.v4()}:3001/assets/${filename}`, {resource_type: "video", format: 'webm'}, async (err, res) => {
+    console.log(`${await publicIp.v4()}:3001/${filename}`);
+    cloudinary.uploader.upload(`http://${await publicIp.v4()}:3001/${filename}`, {resource_type: "video", format: 'webm'}, async (err, res) => {
         if (err) {
             console.log(err);
             return;
