@@ -82,6 +82,6 @@ async function uploadVideo(filename, id) {
 }
 
 app.listen(3001, async () => {
-    console.log(await publicIp.v4());
+    console.log(`${await publicIp.v4()}:3001/1582819886659.webm`);
     console.log('Listening on 3000');
 })
