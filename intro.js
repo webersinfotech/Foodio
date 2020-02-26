@@ -5,6 +5,7 @@ const FS = require('fs');
 const multer  = require('multer');
 const path = require('path');
 const cloudinary = require('cloudinary').v2;
+const publicIp = require('public-ip');
 const app = express();
 
 app.use(express.urlencoded({
@@ -80,6 +81,7 @@ async function uploadVideo(filename, id) {
     })
 }
 
-app.listen(3001, () => {
+app.listen(3001, async () => {
+    console.log(await publicIp.v4());
     console.log('Listening on 3000');
 })
