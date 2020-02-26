@@ -21,7 +21,7 @@ const FS = require('fs');
             groupBy: await fetchGroupby()
         }
     }, {
-        $limit: 1000
+        $limit: 1
     }];
 
     const data = await mongo.fetchRestaurantsAggregate(query);
@@ -32,8 +32,23 @@ const FS = require('fs');
         args: ['--window-size=1600,1200', '--no-sandbox', '--enable-usermedia-screen-capturing', '--allow-http-screen-capture', '--auto-select-desktop-capture-source=Frost- Multipurpose Coming Soon', '--use-views']
     });
 
+    const domains_in_blacklist = [
+        'fonts.gstatic.com',
+        'fonts.googleapis.com'
+    ];
+
     asyncForEach(data, async (doc, index) => {
         const page = await browser.newPage();
+
+        await page.setRequestInterception(true)
+
+        page.on('request', interceptedRequest => {
+            if (domains_in_blacklist.includes(new URL(interceptedRequest.url()).host)) {
+                interceptedRequest.abort()
+            } else {
+                interceptedRequest.continue()
+            }
+        });
 
         await recordScreen(`http://localhost:3001/${doc._id}`, doc._id, page);
 
