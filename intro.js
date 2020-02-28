@@ -44,41 +44,45 @@ app.get('/:id', async (req, res) => {
 })
 
 app.post('/video/:id', type, (req, res) => {
-    console.log('I am fired');
-    console.log(req.file, req.params.id);
-    uploadVideo(req.file.filename, req.params.id);
+    uploadVideo(req.file.filename, req.params.id, req.file.size);
 })
 
-async function uploadVideo(filename, id) {
-    const query = {
-        inUse: true
-    };
-
-    const cloudacc = await mongo.fetchCloudinary(query);
-
-    cloudinary.config({
-        cloud_name: cloudacc[0].cloudName,
-        api_key: cloudacc[0].apiKey,
-        api_secret: cloudacc[0].apiSecret
+async function uploadVideo(filename, id, size) {
+    await mongo.updateRestaurant({_id: id}, {
+        bIsIntroCaptured: true,
+        videoUrl: `${await publicIp.v4()}:3001/${filename}`,
+        videoSize: size / (1000 * 1000)
     })
-    console.log(`${await publicIp.v4()}:3001/${filename}`);
-    cloudinary.uploader.upload(`http://${await publicIp.v4()}:3001/${filename}`, {resource_type: "video", format: 'webm'}, async (err, res) => {
-        if (err) {
-            console.log(err);
-            return;
-        }
 
-        await mongo.updateRestaurant({_id: id}, {
-            bIsIntroCaptured: true,
-            videoUrl: res.secure_url
-        })
+    // const query = {
+    //     inUse: true
+    // };
 
-        setTimeout(() => {
-            FS.unlinkSync(`${__dirname}/assets/${filename}`);
-        }, 10000)
+    // const cloudacc = await mongo.fetchCloudinary(query);
+
+    // cloudinary.config({
+    //     cloud_name: cloudacc[0].cloudName,
+    //     api_key: cloudacc[0].apiKey,
+    //     api_secret: cloudacc[0].apiSecret
+    // })
+
+    // cloudinary.uploader.upload(`http://${await publicIp.v4()}:3001/${filename}`, {resource_type: "video", format: 'webm'}, async (err, res) => {
+    //     if (err) {
+    //         console.log(err);
+    //         return;
+    //     }
+
+    //     await mongo.updateRestaurant({_id: id}, {
+    //         bIsIntroCaptured: true,
+    //         videoUrl: res.secure_url
+    //     })
+
+    //     setTimeout(() => {
+    //         FS.unlinkSync(`${__dirname}/assets/${filename}`);
+    //     }, 10000)
         
-        console.log(res.secure_url);
-    })
+    //     console.log(res.secure_url);
+    // })
 }
 
 app.listen(3001, async () => {
