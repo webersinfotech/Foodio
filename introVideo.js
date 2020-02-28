@@ -21,7 +21,7 @@ const FS = require('fs');
             groupBy: await fetchGroupby()
         }
     }, {
-        $limit: 10
+        $limit: 1000
     }];
 
     const data = await mongo.fetchRestaurantsAggregate(query);
