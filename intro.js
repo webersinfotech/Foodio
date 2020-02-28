@@ -48,6 +48,8 @@ app.post('/video/:id', type, (req, res) => {
 })
 
 async function uploadVideo(filename, id, size) {
+    console.log(`${await publicIp.v4()}:3001/${filename}`);
+    
     await mongo.updateRestaurant({_id: id}, {
         bIsIntroCaptured: true,
         videoUrl: `${await publicIp.v4()}:3001/${filename}`,
