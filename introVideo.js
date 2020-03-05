@@ -26,8 +26,6 @@ const FS = require('fs');
 
     const data = await mongo.fetchRestaurantsAggregate(query);
 
-    const chunks = chunk(data, 3);
-
     const browser = await puppeteer.launch({
         headless: false,
         defaultViewport: null,
@@ -39,17 +37,7 @@ const FS = require('fs');
         'fonts.googleapis.com'
     ];
 
-    asyncForEach(chunks, async (arr, index) => {
-        const promises = [];
-
-        arr.forEach(async (doc) => promises.push(recordPromise(doc, browser)))
-
-        await Promise.all(promises)
-    });
-})();
-
-async function recordPromise(doc, browser) {
-    return new Promise(async (res, rej) => {
+    asyncForEach(data, async (doc, index) => {
         const page = await browser.newPage();
 
         await page.setRequestInterception(true)
@@ -65,10 +53,8 @@ async function recordPromise(doc, browser) {
         await recordScreen(`http://localhost:3001/${doc._id}`, doc._id, page);
 
         page.close();
-
-        res();
     });
-}
+})();
 
 async function recordScreen(url, id, page) {
     return new Promise(async (res, rej) => {
@@ -104,11 +90,3 @@ async function asyncForEach(array, callback) {
         await callback(array[index], index, array);
     }
 }
-
-const chunk = (arr, size) =>
-  arr
-    .reduce((acc, _, i) =>
-      (i % size)
-        ? acc
-        : [...acc, arr.slice(i, i + size)]
-    , [])
