@@ -15,7 +15,7 @@ const request = require('request');
 
     let i = 0;
     
-    data.eachAsync((res) => {
+    data.eachAsync(async (res) => {
         console.log(i, res._id);
         await mongo.updateRestaurant({
             _id: res._id
