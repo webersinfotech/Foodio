@@ -25,7 +25,7 @@ const ffmpeg = require('fluent-ffmpeg');
             const name = res.videoUrl.split('/')[1];
             await prepareVideo(name);
             console.log(`${res.videoUrl.split('/')[0]}/ready/${name.split('.')[0]}-ready.mp4`);
-            await mongo.updateRestaurant({_id: id}, {
+            await mongo.updateRestaurant({_id: res._id}, {
                 bIsVideoReady: true,
                 readyVideoUrl: `${res.videoUrl.split('/')[0]}/ready/${name.split('.')[0]}-ready.mp4`
             });
