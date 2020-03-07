@@ -83,18 +83,18 @@ async function retrieveWhatsapp(url, id, phNumber, page) {
             console.log(result);
 
             if (result) {
-                await mongo.updateRestaurant({_id: id}, {bIsWhatsappTried: true, $push: {
+                await mongo.updateRestaurant({_id: id}, {bIsWhatsappTried: true, $addToSet: {
                     whatsappNumbers: phNumber,
                     scanned: phNumber
                 }});
             } else {
-                await mongo.updateRestaurant({_id: id}, {bIsWhatsappTried: true, $push: {
+                await mongo.updateRestaurant({_id: id}, {bIsWhatsappTried: true, $addToSet: {
                     scanned: phNumber
                 }});
             }
             res();
         } catch(error) {
-            await mongo.updateRestaurant({_id: id}, {bIsWhatsappTried: true, $push: {
+            await mongo.updateRestaurant({_id: id}, {bIsWhatsappTried: true, $addToSet: {
                 scanned: phNumber
             }});
             rej(error);
