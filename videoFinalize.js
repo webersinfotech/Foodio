@@ -4,7 +4,9 @@ const ffmpeg = require('fluent-ffmpeg');
 
 
 (async () => {
-    new ffmpeg()
+    new ffmpeg().on('progress', function(progress) {
+        console.log('Processing: ' + progress.percent + '% done');
+    })
     .addInput(`${__dirname}/assets/1582904095539.webm`)
     .addInput(`${__dirname}/assets/bensound-perception.mp3`)
     .saveToFile(`${__dirname}/assets/output.webm`);
