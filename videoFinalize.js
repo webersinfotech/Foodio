@@ -21,6 +21,8 @@ const ffmpeg = require('fluent-ffmpeg');
 
     const data = await mongo.fetchRestaurantsAggregate(query);
 
+    console.log(data);
+
     asyncForEach(data, async (res) => {
         try {
             const name = res.videoUrl.split('/')[1];
