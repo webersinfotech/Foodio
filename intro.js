@@ -27,7 +27,7 @@ app.use(express.static('assets'));
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, `${__dirname}/assets/1582904095539.webm`)
+      cb(null, `${__dirname}/assets/`)
     },
     filename: function (req, file, cb) {
       cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
