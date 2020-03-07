@@ -12,7 +12,10 @@ const ffmpeg = require('fluent-ffmpeg');
 
     const query = [{
         $match: {
-            bIsIntroCaptured: true
+            bIsIntroCaptured: true,
+            bIsVideoReady: {
+                $ne: true
+            }
         }
     }, {
         $limit: 1
