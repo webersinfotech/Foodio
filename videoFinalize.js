@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const mongo = require('./mongo');
-var ffmpeg = require('fluent-ffmpeg');
+const ffmpeg = require('fluent-ffmpeg');
 
 
 (async () => {
-    new FFmpeg()
+    new ffmpeg()
     .addInput(`${__dirname}/assets/1582904095539.webm`)
     .addInput(`${__dirname}/assets/bensound-perception.mp3`)
     .saveToFile(`${__dirname}/assets/output.mp4`);
