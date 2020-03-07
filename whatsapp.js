@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const mongo = require('./mongo');
 const request = require('request');
 const { Cluster } = require('puppeteer-cluster');
+const FS = require('fs');
 
 (async () => {
     const cluster = await Cluster.launch({
