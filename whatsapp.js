@@ -26,33 +26,33 @@ const { Cluster } = require('puppeteer-cluster');
 
     await mongoose.connect('mongodb://foodioadmin:11999966@15.206.164.241:27017/Foodio', { promiseLibrary: global.Promise, useNewUrlParser: true });
 
-    // const query = [{
-    //     $match: {
-    //         bIsDetailFetched: true,
-    //         bIsWhatsappTried: {
-    //             $ne: true
-    //         },
-    //         groupBy: await fetchGroupby()
-    //     }
-    // }, {
-    //     $limit: 1
-    // }];
+    const query = [{
+        $match: {
+            bIsDetailFetched: true,
+            bIsWhatsappTried: {
+                $ne: true
+            },
+            groupBy: await fetchGroupby()
+        }
+    }, {
+        $limit: 1
+    }];
 
-    // const restaurents = await mongo.fetchRestaurantsAggregateCursor(query);
+    const restaurents = await mongo.fetchRestaurantsAggregateCursor(query);
 
-    // restaurents.eachAsync(async (doc) => {
-    //     try {
-    //         doc.phone_number_arr.map((number) => {
-    //             if (!number.startsWith('+91')) return;
-    //             const phNumber = number.replace('+91 ', '');
-    //             cluster.queue({url: `https://wa.me/091${phNumber.replace(' ', '')}`, ID: doc._id, phNumber: phNumber.replace(' ', '')});
-    //         })
-    //     } catch(error) {
-    //         console.log(error);
-    //     }
-    // });
+    restaurents.eachAsync(async (doc) => {
+        try {
+            doc.phone_number_arr.map((number) => {
+                if (!number.startsWith('+91')) return;
+                const phNumber = number.replace('+91 ', '');
+                cluster.queue({url: `https://wa.me/091${phNumber.replace(' ', '')}`, ID: doc._id, phNumber: phNumber.replace(' ', '')});
+            })
+        } catch(error) {
+            console.log(error);
+        }
+    });
 
-    cluster.queue({url: `https://wa.me/0917990089984`, ID: 12345, phNumber: 0917990089984}); //091877025791
+    // cluster.queue({url: `https://wa.me/091877025791`, ID: 12345, phNumber: 091877025791}); //091877025791
 
     setInterval(async () => {
         await cluster.idle();
@@ -64,6 +64,10 @@ async function retrieveWhatsapp(url, id, phNumber, page) {
     console.log(phNumber, id);
     return new Promise(async (res, rej) => {
         try {
+            await page.setExtraHTTPHeaders({
+                'Accept-Language': 'en-US'
+            });
+
             const response = await page.goto(url, { waitUntil: "domcontentloaded" });
             if (response._status !== 200) rej();
 
@@ -78,21 +82,21 @@ async function retrieveWhatsapp(url, id, phNumber, page) {
 
             console.log(result);
 
-            // if (result) {
-            //     await mongo.updateRestaurant({_id: id}, {bIsWhatsappTried: true, $push: {
-            //         whatsappNumbers: phNumber,
-            //         scanned: phNumber
-            //     }});
-            // } else {
-            //     await mongo.updateRestaurant({_id: id}, {bIsWhatsappTried: true, $push: {
-            //         scanned: phNumber
-            //     }});
-            // }
+            if (result) {
+                await mongo.updateRestaurant({_id: id}, {bIsWhatsappTried: true, $push: {
+                    whatsappNumbers: phNumber,
+                    scanned: phNumber
+                }});
+            } else {
+                await mongo.updateRestaurant({_id: id}, {bIsWhatsappTried: true, $push: {
+                    scanned: phNumber
+                }});
+            }
             res();
         } catch(error) {
-            // await mongo.updateRestaurant({_id: id}, {bIsWhatsappTried: true, $push: {
-            //     scanned: phNumber
-            // }});
+            await mongo.updateRestaurant({_id: id}, {bIsWhatsappTried: true, $push: {
+                scanned: phNumber
+            }});
             rej(error);
         }
     });
