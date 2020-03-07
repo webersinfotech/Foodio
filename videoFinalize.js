@@ -36,7 +36,7 @@ const ffmpeg = require('fluent-ffmpeg');
 })();
 
 async function prepareVideo(name) {
-    return new promise((res, rej) => {
+    return new Promise((res, rej) => {
         new ffmpeg()
         .addInput(`${__dirname}/assets/${name}`)
         .addInput(`${__dirname}/assets/bensound-perception.mp3`)
