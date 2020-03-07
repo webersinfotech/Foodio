@@ -79,8 +79,6 @@ async function retrieveWhatsapp(url, id, phNumber, page) {
                 return text.endsWith('on WhatsApp');
             });
 
-            await page.screenshot({path: 'whatsapp.png'});
-
             console.log(result);
 
             if (result) {
