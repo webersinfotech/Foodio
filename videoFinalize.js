@@ -17,8 +17,6 @@ const ffmpeg = require('fluent-ffmpeg');
                 $ne: true
             }
         }
-    }, {
-        $limit: 1
     }];
 
     const data = await mongo.fetchRestaurantsAggregate(query);
