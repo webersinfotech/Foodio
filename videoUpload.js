@@ -9,33 +9,35 @@ const cloudinary = require('cloudinary').v2;
         console.log(error);
     }
 
-    const query = [{
-        $match: {
-            bIsIntroCaptured: true,
-            bIsVideoReady: true,
-            bVideoUploaded: {
-                $ne: true
+    setTimeout(() => {
+        const query = [{
+            $match: {
+                bIsIntroCaptured: true,
+                bIsVideoReady: true,
+                bVideoUploaded: {
+                    $ne: true
+                }
             }
-        }
-    }];
-
-    const data = await mongo.fetchRestaurantsAggregate(query);
-
-    asyncForEach(data, async (restaurant) => {
-        const cloudinaryQuery = {
-            inUse: true
-        };
+        }];
     
-        const cloudacc = await mongo.fetchCloudinary(cloudinaryQuery);
+        const data = await mongo.fetchRestaurantsAggregate(query);
     
-        cloudinary.config({
-            cloud_name: cloudacc[0].cloudName,
-            api_key: cloudacc[0].apiKey,
-            api_secret: cloudacc[0].apiSecret
+        asyncForEach(data, async (restaurant) => {
+            const cloudinaryQuery = {
+                inUse: true
+            };
+        
+            const cloudacc = await mongo.fetchCloudinary(cloudinaryQuery);
+        
+            cloudinary.config({
+                cloud_name: cloudacc[0].cloudName,
+                api_key: cloudacc[0].apiKey,
+                api_secret: cloudacc[0].apiSecret
+            })
+    
+            await uploadVideo(restaurant);
         })
-
-        await uploadVideo(restaurant);
-    })
+    }, 300000)
 })();
 
 async function uploadVideo(restaurant) {
