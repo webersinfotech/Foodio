@@ -30,6 +30,9 @@ const cloudinary = require('cloudinary').v2;
             bIsVideoReady: true,
             bVideoUploaded: {
                 $ne: true
+            },
+            bIsVideoFetched: {
+                $ne: true
             }
         }, {
             bIsVideoFetched: true
