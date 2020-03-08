@@ -30,11 +30,17 @@ const cloudinary = require('cloudinary').v2;
             api_key: cloudacc[0].apiKey,
             api_secret: cloudacc[0].apiSecret
         })
-    
+
+        await uploadVideo(restaurant);
+    })
+})();
+
+async function uploadVideo(restaurant) {
+    return new Promise((res, rej) => {
         cloudinary.uploader.upload(`http://${restaurant.readyVideoUrl}`, {resource_type: "video", format: 'mp4'}, async (err, res) => {
             if (err) {
                 console.log(err);
-                return;
+                rej(err);
             }
     
             await mongo.updateRestaurant({_id: restaurant._id}, {
@@ -43,9 +49,11 @@ const cloudinary = require('cloudinary').v2;
             })
             
             console.log(res.secure_url);
+
+            res();
         })
     })
-})()
+}
 
 async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
