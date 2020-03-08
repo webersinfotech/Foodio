@@ -16,11 +16,24 @@ const cloudinary = require('cloudinary').v2;
                 bIsVideoReady: true,
                 bVideoUploaded: {
                     $ne: true
+                },
+                bIsVideoFetched: {
+                    $ne: true
                 }
             }
         }];
     
         const data = await mongo.fetchRestaurantsAggregate(query);
+
+        await mongo.updateRestaurant({
+            bIsIntroCaptured: true,
+            bIsVideoReady: true,
+            bVideoUploaded: {
+                $ne: true
+            }
+        }, {
+            bIsVideoFetched: true
+        })
     
         asyncForEach(data, async (restaurant) => {
             const cloudinaryQuery = {
