@@ -12,7 +12,10 @@ const cloudinary = require('cloudinary').v2;
     const query = [{
         $match: {
             bIsIntroCaptured: true,
-            bIsVideoReady: true
+            bIsVideoReady: true,
+            bVideoUploaded: {
+                $ne: true
+            }
         }
     }];
 
