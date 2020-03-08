@@ -9,7 +9,7 @@ const cloudinary = require('cloudinary').v2;
         console.log(error);
     }
 
-    setTimeout(() => {
+    setTimeout(async () => {
         const query = [{
             $match: {
                 bIsIntroCaptured: true,
