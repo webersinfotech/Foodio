@@ -14,8 +14,6 @@ const cloudinary = require('cloudinary').v2;
             bIsIntroCaptured: true,
             bIsVideoReady: true
         }
-    }, {
-        $limit: 1
     }];
 
     const data = await mongo.fetchRestaurantsAggregate(query);
