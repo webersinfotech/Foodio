@@ -36,7 +36,7 @@ const cloudinary = require('cloudinary').v2;
 })();
 
 async function uploadVideo(restaurant) {
-    return new Promise((res, rej) => {
+    return new Promise((resolve, rej) => {
         cloudinary.uploader.upload(`http://${restaurant.readyVideoUrl}`, {resource_type: "video", format: 'mp4'}, async (err, res) => {
             if (err) {
                 console.log(err);
@@ -50,7 +50,7 @@ async function uploadVideo(restaurant) {
             
             console.log(res.secure_url);
 
-            res();
+            resolve();
         })
     })
 }
