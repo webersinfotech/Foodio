@@ -53,7 +53,7 @@ const cloudinary = require('cloudinary').v2;
     
             await uploadVideo(restaurant);
         })
-    }, 1000)
+    }, 60000)
 })();
 
 async function uploadVideo(restaurant) {
