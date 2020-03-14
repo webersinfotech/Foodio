@@ -20,7 +20,7 @@ const publicIp = require('public-ip');
             videoUrl: new RegExp(`^${await publicIp.v4()}:3001`)
         }
     }, {
-        $limit: 1
+        $limit: 10
     }];
 
     const data = await mongo.fetchRestaurantsAggregate(query);
