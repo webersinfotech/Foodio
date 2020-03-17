@@ -6,6 +6,7 @@ const categories = require('./models/categories.modal');
 const items = require('./models/items.modal');
 const counter = require('./models/counter.modal');
 const cloudinary = require('./models/cloudinary.modal');
+const users = require('./models/users.modal');
 
 class Mongoose {
     createCities(data) {
@@ -87,6 +88,14 @@ class Mongoose {
 
     updateOnceCloudinary(query, data) {
         return cloudinary.findOneAndUpdate(query, data);
+    }
+
+    createUser(data) {
+        return users.create(data);
+    }
+
+    fetchUser(query) {
+        return users.find(query);
     }
 }
 
