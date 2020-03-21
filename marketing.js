@@ -1,9 +1,11 @@
 const express = require('express');
 const mongo = require('./mongo');
 const mongoose = require('mongoose');
+const cors = require('cors')
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 mongoose.connect('mongodb://foodioadmin:11999966@15.206.164.241:27017/Foodio', { promiseLibrary: global.Promise, useNewUrlParser: true }).then(() => {
     console.log('Connected successfully')
