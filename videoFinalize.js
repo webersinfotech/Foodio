@@ -24,7 +24,7 @@ const chunk = (arr, size) => arr .reduce((acc, _, i) => (i % size) ? acc : [...a
 
     const data = await mongo.fetchRestaurantsAggregate(query);
 
-    const chunkedData = chunk(data, 10);
+    const chunkedData = chunk(data, 4);
 
     asyncForEach(chunkedData, async (restaurants) => {
         restaurants.forEach((res) => {
