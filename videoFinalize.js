@@ -3,6 +3,7 @@ const mongo = require('./mongo');
 const ffmpeg = require('fluent-ffmpeg');
 const publicIp = require('public-ip');
 
+const chunk = (arr, size) => arr .reduce((acc, _, i) => (i % size) ? acc : [...acc, arr.slice(i, i + size)] , []);
 
 (async () => {
     try {
@@ -23,18 +24,26 @@ const publicIp = require('public-ip');
 
     const data = await mongo.fetchRestaurantsAggregate(query);
 
-    asyncForEach(data, async (res) => {
-        try {
-            const name = res.videoUrl.split('/')[1];
-            await prepareVideo(name);
-            console.log(`${res.videoUrl.split('/')[0]}/ready/${name.split('.')[0]}-ready.mp4`);
-            await mongo.updateRestaurant({_id: res._id}, {
-                bIsVideoReady: true,
-                readyVideoUrl: `${res.videoUrl.split('/')[0]}/ready/${name.split('.')[0]}-ready.mp4`
-            });
-        } catch(error) {
-            console.log(error);
-        }
+    const chunkedData = chunk(data, 3);
+
+    asyncForEach(chunkedData, async (restaurants) => {
+        restaurants.forEach((res) => {
+            try {
+                const name = res.videoUrl.split('/')[1];
+                prepareVideo(name).then(() => {
+                    console.log(`${res.videoUrl.split('/')[0]}/ready/${name.split('.')[0]}-ready.mp4`);
+                    mongo.updateRestaurant({_id: res._id}, {
+                        bIsVideoReady: true,
+                        readyVideoUrl: `${res.videoUrl.split('/')[0]}/ready/${name.split('.')[0]}-ready.mp4`
+                    });
+                }).catch((error) => {
+                    console.log(error);
+                });
+            } catch(error) {
+                console.log(error);
+            }
+        })
+        await new Promise(resolve => setTimeout(resolve, 60000));
     });
 })();
 
