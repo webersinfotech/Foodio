@@ -72,7 +72,7 @@ async function uploadVideo(restaurant) {
                 cloudinaryUrl: res.secure_url
             })
             
-            console.log(res.secure_url);
+            console.log(restaurant._id, res.secure_url);
 
             resolve();
         })
