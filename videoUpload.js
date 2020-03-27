@@ -10,6 +10,19 @@ const publicIp = require('public-ip');
         console.log(error);
     }
 
+    // const data = await mongo.updateManyRestaurant({
+    //     bIsIntroCaptured: true,
+    //     bIsVideoReady: true,
+    //     bVideoUploaded: {
+    //         $ne: true
+    //     },
+    //     bIsVideoFetched: true
+    // }, {
+    //     bIsVideoFetched: false
+    // })
+
+    // console.log(data);
+
     setInterval(async () => {
         const query = [{
             $match: {
