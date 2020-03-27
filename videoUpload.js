@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const mongo = require('./mongo');
 const cloudinary = require('cloudinary').v2;
+const publicIp = require('public-ip');
 
 (async () => {
     try {
@@ -19,7 +20,8 @@ const cloudinary = require('cloudinary').v2;
                 },
                 bIsVideoFetched: {
                     $ne: true
-                }
+                },
+                videoUrl: new RegExp(`^${await publicIp.v4()}:3001`)
             }
         }];
     
@@ -33,7 +35,8 @@ const cloudinary = require('cloudinary').v2;
             },
             bIsVideoFetched: {
                 $ne: true
-            }
+            },
+            videoUrl: new RegExp(`^${await publicIp.v4()}:3001`)
         }, {
             bIsVideoFetched: true
         })
