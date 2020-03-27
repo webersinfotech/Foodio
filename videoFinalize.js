@@ -44,7 +44,7 @@ const chunk = (arr, size) => arr .reduce((acc, _, i) => (i % size) ? acc : [...a
                 console.log(error);
             }
         })
-        await new Promise(resolve => setTimeout(resolve, 90000));
+        await new Promise(resolve => setTimeout(resolve, 75000));
     });
 })();
 
