@@ -29,6 +29,7 @@ const chunk = (arr, size) => arr .reduce((acc, _, i) => (i % size) ? acc : [...a
     asyncForEach(chunkedData, async (restaurants) => {
         restaurants.forEach((res) => {
             try {
+                console.log(res._id);
                 const name = res.videoUrl.split('/')[1];
                 prepareVideo(name).then(async () => {
                     console.log(`${res.videoUrl.split('/')[0]}/ready/${name.split('.')[0]}-ready.mp4`, res._id);
