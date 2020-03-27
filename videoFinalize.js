@@ -8,7 +8,6 @@ const chunk = (arr, size) => arr .reduce((acc, _, i) => (i % size) ? acc : [...a
 (async () => {
     try {
         await mongoose.connect('mongodb://foodioadmin:11999966@15.206.164.241:27017/Foodio', { promiseLibrary: global.Promise, useNewUrlParser: true });
-        console.log('Connected: ');
     } catch(error) {
         console.log(error);
     }
@@ -25,14 +24,11 @@ const chunk = (arr, size) => arr .reduce((acc, _, i) => (i % size) ? acc : [...a
 
     const data = await mongo.fetchRestaurantsAggregate(query);
 
-    console.log('data: ', data);
-
     const chunkedData = chunk(data, 4);
 
     asyncForEach(chunkedData, async (restaurants) => {
         restaurants.forEach((res) => {
             try {
-                console.log(res);
                 const name = res.videoUrl.split('/')[1];
                 prepareVideo(name).then(async () => {
                     console.log(`${res.videoUrl.split('/')[0]}/ready/${name.split('.')[0]}-ready.mp4`, res._id);
