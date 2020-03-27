@@ -8,6 +8,7 @@ const chunk = (arr, size) => arr .reduce((acc, _, i) => (i % size) ? acc : [...a
 (async () => {
     try {
         await mongoose.connect('mongodb://foodioadmin:11999966@15.206.164.241:27017/Foodio', { promiseLibrary: global.Promise, useNewUrlParser: true });
+        console.log('Connected: ');
     } catch(error) {
         console.log(error);
     }
