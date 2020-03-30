@@ -31,28 +31,28 @@ const publicIp = require('public-ip');
                 bVideoUploaded: {
                     $ne: true
                 },
-                bIsVideoFetched: {
-                    $ne: true
-                },
+                // bIsVideoFetched: {
+                //     $ne: true
+                // },
                 videoUrl: new RegExp(`^${await publicIp.v4()}:3001`)
             }
         }];
     
         const data = await mongo.fetchRestaurantsAggregate(query);
 
-        await mongo.updateRestaurant({
-            bIsIntroCaptured: true,
-            bIsVideoReady: true,
-            bVideoUploaded: {
-                $ne: true
-            },
-            bIsVideoFetched: {
-                $ne: true
-            },
-            videoUrl: new RegExp(`^${await publicIp.v4()}:3001`)
-        }, {
-            bIsVideoFetched: true
-        })
+        // await mongo.updateRestaurant({
+        //     bIsIntroCaptured: true,
+        //     bIsVideoReady: true,
+        //     bVideoUploaded: {
+        //         $ne: true
+        //     },
+        //     bIsVideoFetched: {
+        //         $ne: true
+        //     },
+        //     videoUrl: new RegExp(`^${await publicIp.v4()}:3001`)
+        // }, {
+        //     bIsVideoFetched: true
+        // })
     
         asyncForEach(data, async (restaurant) => {
             const cloudinaryQuery = {
