@@ -23,7 +23,7 @@ const publicIp = require('public-ip');
 
     // console.log(data);
 
-    setInterval(async () => {
+    // setInterval(async () => {
         const query = [{
             $match: {
                 bIsIntroCaptured: true,
@@ -69,7 +69,7 @@ const publicIp = require('public-ip');
     
             await uploadVideo(restaurant);
         })
-    }, 60000)
+    // }, 60000)
 })();
 
 async function uploadVideo(restaurant) {
