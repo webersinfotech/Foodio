@@ -24,28 +24,30 @@ const chunk = (arr, size) => arr .reduce((acc, _, i) => (i % size) ? acc : [...a
 
     const data = await mongo.fetchRestaurantsAggregate(query);
 
-    const chunkedData = chunk(data, 4);
+    console.log(data, data.length);
 
-    asyncForEach(chunkedData, async (restaurants) => {
-        restaurants.forEach((res) => {
-            try {
-                console.log(res._id);
-                const name = res.videoUrl.split('/')[1];
-                prepareVideo(name).then(async () => {
-                    console.log(`${res.videoUrl.split('/')[0]}/ready/${name.split('.')[0]}-ready.mp4`, res._id);
-                    await mongo.updateRestaurant({_id: res._id}, {
-                        bIsVideoReady: true,
-                        readyVideoUrl: `${res.videoUrl.split('/')[0]}/ready/${name.split('.')[0]}-ready.mp4`
-                    });
-                }).catch((error) => {
-                    console.log(error);
-                });
-            } catch(error) {
-                console.log(error);
-            }
-        })
-        await new Promise(resolve => setTimeout(resolve, 75000));
-    });
+    // const chunkedData = chunk(data, 4);
+
+    // asyncForEach(chunkedData, async (restaurants) => {
+    //     restaurants.forEach((res) => {
+    //         try {
+    //             console.log(res._id);
+    //             const name = res.videoUrl.split('/')[1];
+    //             prepareVideo(name).then(async () => {
+    //                 console.log(`${res.videoUrl.split('/')[0]}/ready/${name.split('.')[0]}-ready.mp4`, res._id);
+    //                 await mongo.updateRestaurant({_id: res._id}, {
+    //                     bIsVideoReady: true,
+    //                     readyVideoUrl: `${res.videoUrl.split('/')[0]}/ready/${name.split('.')[0]}-ready.mp4`
+    //                 });
+    //             }).catch((error) => {
+    //                 console.log(error);
+    //             });
+    //         } catch(error) {
+    //             console.log(error);
+    //         }
+    //     })
+    //     await new Promise(resolve => setTimeout(resolve, 75000));
+    // });
 })();
 
 async function prepareVideo(name) {
