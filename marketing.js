@@ -90,6 +90,7 @@ app.put('/viewed', async (req, res) => {
             message: 'Contact viewed operation success'
         });
     } catch(error) {
+        console.log(error);
         res.status(400).send({
             message: 'Failed to update view status'
         });
