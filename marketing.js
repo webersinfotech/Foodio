@@ -59,7 +59,7 @@ app.get('/contacts', async (req, res) => {
         restaurants.map((rest) => {
             const whatsapps = [];
             rest.phone_number_arr.map((whatsapp) => {
-                whatsapps.push(`https://api.whatsapp.com/send?phone=91${whatsapp.replace(/\s/g, "")}&text=${message}%20${encodeURIComponent(rest.cloudinaryUrl)}&source=&data=`);
+                whatsapps.push(`https://api.whatsapp.com/send?phone=${whatsapp.replace(/\s/g, "")}&text=${message}%20${encodeURIComponent(rest.cloudinaryUrl)}&source=&data=`);
             })
             contacts.push({
                 _id: rest._id,
