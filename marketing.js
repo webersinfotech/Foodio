@@ -72,6 +72,7 @@ app.get('/contacts', async (req, res) => {
             data: contacts
         });
     } catch(error) {
+        console.log(error);
         res.status(400).send({
             message: 'Failed to fetch data'
         });
