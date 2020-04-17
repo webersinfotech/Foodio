@@ -55,18 +55,18 @@ app.get('/contacts', async (req, res) => {
         const contacts = [];
     
         restaurants.map((rest) => {
-            const message = `Hello ${rest.sName}
+            const message = `Hello ${rest.sName},
             
-            Are you paying high commission for selling your food online?
+Are you paying high commission for selling your food online?
 
-            Get your own app for the restaurant & that too by paying ₹100 only, Which includes 6 months of free service and free social media marketing.
+Get your own app for the restaurant & that too by paying ₹100 only, Which includes 6 months of free service and free social media marketing.
             
-            So, What are you waiting for..? 
+So, What are you waiting for..? 
             
-            Call: +917990089984
-            Whatsapp: +919429058733
+Call: +917990089984
+Whatsapp: +919429058733
             
-            check your restaurant video: `;
+Check your restaurant video: `;
 
             const whatsapps = [];
 
