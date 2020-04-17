@@ -54,13 +54,26 @@ app.get('/contacts', async (req, res) => {
     
         const contacts = [];
     
-        const message = 'Are%20you%20paying%20high%20commission%20for%20selling%20your%20food%20online%3F%0A%0AGet%20your%20own%20app%20for%20the%20restaurant%20%26%20that%20too%20by%20paying%20%E2%82%B9100%20only%2C%20Which%20includes%206%20months%20of%20free%20service%20and%20free%20social%20media%20marketing.%0A%0ASo%2C%20What%20are%20you%20waiting%20for..%3F%20%0A%0ACall%3A%20%2B917990089984%0AWhatsapp%3A%20%2B919429058733%0A%0Acheck%20your%20restaurant%20video%3A%20';
-    
         restaurants.map((rest) => {
+            const message = `Hello ${rest.sName}
+            
+            Are you paying high commission for selling your food online?
+
+            Get your own app for the restaurant & that too by paying ₹100 only, Which includes 6 months of free service and free social media marketing.
+            
+            So, What are you waiting for..? 
+            
+            Call: +917990089984
+            Whatsapp: +919429058733
+            
+            check your restaurant video: `;
+
             const whatsapps = [];
+
             rest.phone_number_arr.map((whatsapp) => {
-                whatsapps.push(`https://api.whatsapp.com/send?phone=${whatsapp.replace(/\s/g, "")}&text=${message}%20${encodeURIComponent(rest.cloudinaryUrl)}&source=&data=`);
+                whatsapps.push(`https://api.whatsapp.com/send?phone=${whatsapp.replace(/\s/g, "")}&text=${encodeURIComponent(message)}%20${encodeURIComponent(rest.cloudinaryUrl)}&source=&data=`);
             })
+
             contacts.push({
                 _id: rest._id,
                 sName: rest.sName,
