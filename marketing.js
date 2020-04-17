@@ -55,6 +55,8 @@ app.get('/contacts', async (req, res) => {
         const contacts = [];
     
         restaurants.map((rest) => {
+            if (typeof rest.phone_number_arr === 'undefined') return;
+            
             const message = `Hello ${rest.sName},
             
 Are you paying high commission for selling your food online?
@@ -115,6 +117,45 @@ app.put('/viewed', async (req, res) => {
         });
     }
 });
+
+async function assignData() {
+    setTimeout(async () => {
+        const restQuery = [{
+            $match: {
+                iAssignedTo: {
+                    $ne: mongoose.Types.ObjectId('5e9c264a03f77c5d35e68de4')
+                },
+                bContactViewed: {
+                    $ne: true
+                },
+                bVideoUploaded: true
+            }
+        }, {
+            $limit: 100
+        }];
+
+        const restaurants = await mongo.fetchRestaurantsAggregate(restQuery);
+
+        const IDS = [];
+
+        restaurants.map((rest) => {
+            IDS.push(rest._id);
+        });
+
+        const updateData = await mongo.updateManyRestaurant({
+            _id: {
+                $in: IDS
+            }
+        }, {
+            iAssignedTo: mongoose.Types.ObjectId('5e9c2b4b2787385e6ccffae2')
+        });
+
+        console.log(updateData);
+    }, 1000);
+    console.log('assignData');
+}
+
+assignData();
 
 // app.post('/assign/:user_id', async (req, res) => {
 //     try {
