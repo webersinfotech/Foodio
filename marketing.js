@@ -33,6 +33,8 @@ app.get('/contacts', async (req, res) => {
         }
     
         const users = await mongo.fetchUser(query);
+
+        console.log(users);
     
         const restQuery = [{
             $match: {
@@ -43,6 +45,8 @@ app.get('/contacts', async (req, res) => {
         }, {
             $limit: 10
         }]
+
+        console.log(restQuery);
     
         const restaurants = JSON.parse(JSON.stringify(await mongo.fetchRestaurantsAggregate(restQuery)));
     
