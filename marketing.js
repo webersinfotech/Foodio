@@ -54,7 +54,7 @@ app.get('/contacts', async (req, res) => {
     
         const contacts = [];
     
-        const message = 'Are%20you%20paying%20high%20commission%20for%20selling%20your%20food%20online%3F%0A%0AGet%20your%20own%20restaurant%20app%20that%20also%20on%20paying%20%E2%82%B9100%20only.%20Then%20after%20free%20for%206%20months.%20%0A%0ASo%20what%20are%20you%20waiting%20for%3F%20%0A%0ACall%3A%20%2B917990089984%0AWhatsapp%3A%20%2B919429058733%0A%0Acheck%20video%3A';
+        const message = 'Are%20you%20paying%20high%20commission%20for%20selling%20your%20food%20online%3F%0A%0AGet%20your%20own%20app%20for%20the%20restaurant%20%26%20that%20too%20by%20paying%20%E2%82%B9100%20only%2C%20Which%20includes%206%20months%20of%20free%20service%20and%20free%20social%20media%20marketing.%0A%0ASo%2C%20What%20are%20you%20waiting%20for..%3F%20%0A%0ACall%3A%20%2B917990089984%0AWhatsapp%3A%20%2B919429058733%0A%0Acheck%20your%20restaurant%20video%3A%20';
     
         restaurants.map((rest) => {
             const whatsapps = [];
@@ -102,6 +102,19 @@ app.put('/viewed', async (req, res) => {
         });
     }
 });
+
+// app.post('/assign/:user_id', async (req, res) => {
+//     try {
+//         const restQuery = [{}]
+//         res.status(200).send({
+//             message: 'Data assigned successfully'
+//         });
+//     } catch(error) {
+//         res.status(400).send({
+//             message: 'Failed to assign data'
+//         }); 
+//     }
+// });
 
 app.listen(4392, async () => {
     console.log('Listening on 4392');
