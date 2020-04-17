@@ -38,7 +38,6 @@ app.get('/contacts', async (req, res) => {
             $match: {
                 iAssignedTo: users[0]._id,
                 bContactViewed: false,
-                bIsWhatsappTried: true,
                 bVideoUploaded: true
             }
         }, {
