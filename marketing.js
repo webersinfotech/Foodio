@@ -38,7 +38,7 @@ app.get('/contacts', async (req, res) => {
     
         const restQuery = [{
             $match: {
-                iAssignedTo: users[0]._id,
+                iAssignedTo: mongoose.Types.ObjectId(users[0]._id),
                 bContactViewed: false,
                 bVideoUploaded: true
             }
