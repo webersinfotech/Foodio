@@ -53,9 +53,19 @@ app.get('/contacts', async (req, res) => {
         const restaurants = JSON.parse(JSON.stringify(await mongo.fetchRestaurantsAggregate(restQuery)));
     
         const contacts = [];
-    
-        restaurants.map((rest) => {
-            if (typeof rest.phone_number_arr === 'undefined') return;
+        
+        for (let rest of restaurants) {
+        // restaurants.map((rest) => {
+            if (typeof rest.phone_number_arr === 'undefined') {
+                await mongo.updateRestaurant({
+                    _id: rest._id
+                }, {
+                    bContactViewed: true,
+                    dContactViewedDate: new Date()
+                });
+
+                return;
+            }
 
             const message = `Hello ${rest.sName},
             
@@ -118,44 +128,43 @@ app.put('/viewed', async (req, res) => {
     }
 });
 
-// async function assignData() {
-//     setTimeout(async () => {
-//         const restQuery = [{
-//             $match: {
-//                 iAssignedTo: {
-//                     $ne: mongoose.Types.ObjectId('5e9c264a03f77c5d35e68de4')
-//                 },
-//                 bContactViewed: {
-//                     $ne: true
-//                 },
-//                 bVideoUploaded: true
-//             }
-//         }, {
-//             $limit: 100
-//         }];
+async function assignData() {
+    setTimeout(async () => {
+        const restQuery = [{
+            $match: {
+                iAssignedTo: null,
+                bContactViewed: {
+                    $ne: true
+                },
+                bVideoUploaded: true
+            }
+        }, {
+            $limit: 1000
+        }];
 
-//         const restaurants = await mongo.fetchRestaurantsAggregate(restQuery);
+        const restaurants = await mongo.fetchRestaurantsAggregate(restQuery);
 
-//         const IDS = [];
+        const IDS = [];
 
-//         restaurants.map((rest) => {
-//             IDS.push(rest._id);
-//         });
+        restaurants.map((rest) => {
+            console.log(rest._id);
+            IDS.push(rest._id);
+        });
 
-//         const updateData = await mongo.updateManyRestaurant({
-//             _id: {
-//                 $in: IDS
-//             }
-//         }, {
-//             iAssignedTo: mongoose.Types.ObjectId('5e9c2b4b2787385e6ccffae2')
-//         });
+        const updateData = await mongo.updateManyRestaurant({
+            _id: {
+                $in: IDS
+            }
+        }, {
+            iAssignedTo: mongoose.Types.ObjectId('5e9c264a03f77c5d35e68de4')
+        });
 
-//         console.log(updateData);
-//     }, 1000);
-//     console.log('assignData');
-// }
+        console.log(updateData);
+    }, 1000);
+    console.log('assignData');
+}
 
-// assignData();
+assignData();
 
 // app.post('/assign/:user_id', async (req, res) => {
 //     try {
