@@ -92,7 +92,7 @@ Check your restaurant video: `;
                 aWhatsapps: whatsapps,
                 sVideo: rest.cloudinaryUrl
             })
-        })
+        }
     
         res.status(200).send({
             message: 'Restaurant fetched successfully',
