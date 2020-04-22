@@ -57,6 +57,8 @@ app.get('/contacts', async (req, res) => {
         for (let rest of restaurants) {
         // restaurants.map((rest) => {
             if (typeof rest.phone_number_arr === 'undefined') {
+                console.log(rest._id);
+                
                 await mongo.updateRestaurant({
                     _id: rest._id
                 }, {
