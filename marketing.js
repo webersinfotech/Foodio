@@ -58,18 +58,15 @@ app.get('/contacts', async (req, res) => {
         // restaurants.map((rest) => {
             if (typeof rest.phone_number_arr === 'undefined') {
                 console.log(rest._id);
-                
+
                 await mongo.updateRestaurant({
                     _id: rest._id
                 }, {
                     bContactViewed: true,
                     dContactViewedDate: new Date()
                 });
-
-                return;
-            }
-
-            const message = `Hello ${rest.sName},
+            } else {
+                const message = `Hello ${rest.sName},
             
 Are you paying high commission for selling your food online?
 
@@ -81,19 +78,20 @@ Call: +917990089984
 Whatsapp: +919429058733
             
 Check your restaurant video: `;
-
-            const whatsapps = [];
-
-            rest.phone_number_arr.map((whatsapp) => {
-                whatsapps.push(`https://api.whatsapp.com/send?phone=${whatsapp.replace(/\s/g, "")}&text=${encodeURIComponent(message)}%20${encodeURIComponent(rest.cloudinaryUrl)}&source=&data=`);
-            })
-
-            contacts.push({
-                _id: rest._id,
-                sName: rest.sName,
-                aWhatsapps: whatsapps,
-                sVideo: rest.cloudinaryUrl
-            })
+                
+                const whatsapps = [];
+    
+                rest.phone_number_arr.map((whatsapp) => {
+                    whatsapps.push(`https://api.whatsapp.com/send?phone=${whatsapp.replace(/\s/g, "")}&text=${encodeURIComponent(message)}%20${encodeURIComponent(rest.cloudinaryUrl)}&source=&data=`);
+                })
+    
+                contacts.push({
+                    _id: rest._id,
+                    sName: rest.sName,
+                    aWhatsapps: whatsapps,
+                    sVideo: rest.cloudinaryUrl
+                })
+            }
         }
     
         res.status(200).send({
