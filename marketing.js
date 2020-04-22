@@ -128,43 +128,43 @@ app.put('/viewed', async (req, res) => {
     }
 });
 
-async function assignData() {
-    setTimeout(async () => {
-        const restQuery = [{
-            $match: {
-                iAssignedTo: null,
-                bContactViewed: {
-                    $ne: true
-                },
-                bVideoUploaded: true
-            }
-        }, {
-            $limit: 1000
-        }];
+// async function assignData() {
+//     setTimeout(async () => {
+//         const restQuery = [{
+//             $match: {
+//                 iAssignedTo: null,
+//                 bContactViewed: {
+//                     $ne: true
+//                 },
+//                 bVideoUploaded: true
+//             }
+//         }, {
+//             $limit: 1000
+//         }];
 
-        const restaurants = await mongo.fetchRestaurantsAggregate(restQuery);
+//         const restaurants = await mongo.fetchRestaurantsAggregate(restQuery);
 
-        const IDS = [];
+//         const IDS = [];
 
-        restaurants.map((rest) => {
-            console.log(rest._id);
-            IDS.push(rest._id);
-        });
+//         restaurants.map((rest) => {
+//             console.log(rest._id);
+//             IDS.push(rest._id);
+//         });
 
-        const updateData = await mongo.updateManyRestaurant({
-            _id: {
-                $in: IDS
-            }
-        }, {
-            iAssignedTo: mongoose.Types.ObjectId('5e9c264a03f77c5d35e68de4')
-        });
+//         const updateData = await mongo.updateManyRestaurant({
+//             _id: {
+//                 $in: IDS
+//             }
+//         }, {
+//             iAssignedTo: mongoose.Types.ObjectId('5e9c264a03f77c5d35e68de4')
+//         });
 
-        console.log(updateData);
-    }, 1000);
-    console.log('assignData');
-}
+//         console.log(updateData);
+//     }, 1000);
+//     console.log('assignData');
+// }
 
-assignData();
+// assignData();
 
 // app.post('/assign/:user_id', async (req, res) => {
 //     try {
