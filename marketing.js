@@ -48,7 +48,7 @@ app.get('/contacts', async (req, res) => {
             $limit: 10
         }]
 
-        console.log(restQuery);
+        console.log(JSON.stringify(restQuery));
     
         const restaurants = JSON.parse(JSON.stringify(await mongo.fetchRestaurantsAggregate(restQuery)));
     
