@@ -45,7 +45,7 @@ app.get('/contacts', async (req, res) => {
                 bVideoUploaded: true
             }
         }, {
-            $limit: 10
+            $limit: 100
         }]
 
         console.log(JSON.stringify(restQuery));
